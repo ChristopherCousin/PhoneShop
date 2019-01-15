@@ -24,7 +24,7 @@ void MainWindow::connectDataBase()
     bool ok = db.open();
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_btn_AddPhone_clicked()
 {
     QSqlQuery query("INSERT INTO availablephones(nombreavailablephones) values('" + ui->lineEdit->text() + "');", db);
     if(query.isValid())
@@ -32,5 +32,33 @@ void MainWindow::on_pushButton_clicked()
         QMessageBox::information(this, "Accepted", "The phone were added correctly!");
     } else {
         QMessageBox::information(this, "Warning", "We can't repair this Phone!");
+    }
+}
+
+void MainWindow::on_btn_WriteXML_clicked()
+{
+    // Escribimos el XML
+    QDomDocument document;
+
+    QDomElement root = document.createElement("Phones");
+
+    // lo añadimos al archivo
+    document.appendChild(root);
+
+    QDomElement phone = document.createElement("Phone");
+    root.appendChild(phone);
+
+    QDomElement namePhone = document.createElement("Name");
+    phone.appendChild(namePhone);
+
+    //escribimos en el file
+    QFile file("AvailablePhones.xml");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writting";
+    } else {
+        QTextStream stream(&file);
+        stream << document.toString();
+        file.close();
     }
 }

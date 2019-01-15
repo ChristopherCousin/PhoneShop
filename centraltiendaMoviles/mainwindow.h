@@ -7,6 +7,8 @@
 #include <QSqlQuery>
 #include <QUuid>
 #include <QMessageBox>
+#include <iostream>
+#include <QtXml>
 
 namespace Ui {
 class MainWindow;
@@ -23,7 +25,9 @@ public:
     QSqlDatabase db;
 
 private slots:
-    void on_pushButton_clicked();
+    void on_btn_AddPhone_clicked();
+
+    void on_btn_WriteXML_clicked();
 
 private:
     Ui::MainWindow *ui;
