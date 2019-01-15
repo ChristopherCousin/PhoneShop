@@ -29,6 +29,47 @@
        <attribute name="title">
         <string>Phones</string>
        </attribute>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>30</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Name:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>27</y>
+          <width>421</width>
+          <height>32</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>167</x>
+          <y>213</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>ADD Phone</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -54,7 +95,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAdd_Phone">
    <property name="text">
-    <string>Add Phone</string>
+    <string>&amp;Add Phone</string>
    </property>
   </action>
  </widget>
