@@ -2,10 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtSql>
-#include <QDebug>
-#include <QSqlQuery>
-#include <QUuid>
+#include <QtXml>
+#include <QFile>
+#include <iostream>
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +17,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void connectDataBase();
+    void loadXML();
+    void readXML();
+
+
+    // el qdomdocumento representara un documento xml
+    QDomDocument xmlBOM;
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

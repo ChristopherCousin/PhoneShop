@@ -27,7 +27,7 @@ void MainWindow::connectDataBase()
 void MainWindow::on_pushButton_clicked()
 {
     QSqlQuery query("INSERT INTO availablephones(nombreavailablephones) values('" + ui->lineEdit->text() + "');", db);
-    if(!query.isValid())
+    if(query.isValid())
     {
         QMessageBox::information(this, "Accepted", "The phone were added correctly!");
     } else {
