@@ -7,6 +7,16 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connectDataBase();
+    availablePhones();
+    if(ui->comboBox->currentText() == nullptr)
+    {
+        ui->lineEdit_Repairname->setDisabled(true);
+        ui->lineEdit_Repairprice->setDisabled(true);
+        ui->btn_AddRepair->setDisabled(true);
+
+    } else {
+
+    }
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +32,20 @@ void MainWindow::connectDataBase()
     db.setUserName("usuario");
     db.setPassword("usuario");
     bool ok = db.open();
+
+    if(!ok){
+        QMessageBox::information(this, "Warning", "Failed to connect to the DataBase");
+    }
+}
+
+void MainWindow::availablePhones()
+{
+    QSqlQuery query("SELECT * FROM availablephones", db);
+    while(query.next())
+    {
+        QString availablePhone = query.value(0).toString();
+        ui->comboBox->addItem(availablePhone);
+    }
 }
 
 void MainWindow::on_btn_AddPhone_clicked()
@@ -32,6 +56,8 @@ void MainWindow::on_btn_AddPhone_clicked()
         QMessageBox::information(this, "Accepted", "The phone were added correctly!");
     } else {
         QMessageBox::information(this, "Warning", "We can't repair this Phone!");
+        ui->comboBox->clear();
+        availablePhones();
     }
 }
 
@@ -71,5 +97,29 @@ void MainWindow::on_btn_WriteXML_clicked()
         QTextStream stream(&file);
         stream << document.toString();
         file.close();
+    }
+}
+
+
+
+void MainWindow::on_btn_deletePhone_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.setInformativeText("This will delete the phone of our DataBase, are you sure?");
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    int ret = msgBox.exec();
+
+    switch (ret) {
+      case QMessageBox::Ok:
+    {
+          QSqlQuery query("DELETE FROM availablephones WHERE nombreavailablephones = '" + ui->comboBox->currentText()+ "'");
+          ui->comboBox->clear();
+          availablePhones();
+          break;
+    }
+      case QMessageBox::Cancel:
+
+          break;
     }
 }

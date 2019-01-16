@@ -44,14 +44,13 @@ void MainWindow::readXML()
     {
 
         // Si el tag del nombre del hijo es PHONE
-        if (Component.tagName() == "Phones")
+        if (Component.tagName() == "Phone")
         {
 
             // Cogemos el primer hijo de phone
-            QDomElement Child=Component.firstChild().toElement();
+            QDomElement Child = Component.firstChild().toElement();
 
             QString Name;
-
 
             // leemos cada hijo del componente nodo
             while (!Child.isNull())
