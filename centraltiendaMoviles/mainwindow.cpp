@@ -8,15 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connectDataBase();
     availablePhones();
-    if(ui->comboBox->currentText() == nullptr)
-    {
-        ui->lineEdit_Repairname->setDisabled(true);
-        ui->lineEdit_Repairprice->setDisabled(true);
-        ui->btn_AddRepair->setDisabled(true);
-
-    } else {
-
-    }
 }
 
 MainWindow::~MainWindow()
@@ -38,6 +29,7 @@ void MainWindow::connectDataBase()
     }
 }
 
+
 void MainWindow::availablePhones()
 {
     QSqlQuery query("SELECT * FROM availablephones", db);
@@ -45,6 +37,17 @@ void MainWindow::availablePhones()
     {
         QString availablePhone = query.value(0).toString();
         ui->comboBox->addItem(availablePhone);
+    }
+    if(ui->comboBox->currentText() == "")
+    {
+        ui->lineEdit_Repairname->setDisabled(true);
+        ui->lineEdit_Repairprice->setDisabled(true);
+        ui->btn_AddRepair->setDisabled(true);
+
+    } else {
+        ui->lineEdit_Repairname->setDisabled(false);
+        ui->lineEdit_Repairprice->setDisabled(false);
+        ui->btn_AddRepair->setDisabled(false);
     }
 }
 
@@ -122,4 +125,12 @@ void MainWindow::on_btn_deletePhone_clicked()
 
           break;
     }
+}
+
+void MainWindow::on_btn_AddRepair_clicked()
+{
+    QSqlQuery query("INSERT INTO availablerepairs (phonenameavailablerepairs, repairnameavailablerepairs,"
+                    " priceavailablerepairs) VALUES ('" + ui->comboBox->currentText() + "',"
+                    " '" + ui->lineEdit_Repairname->text() + "', " + ui->lineEdit_Repairprice->text() + ")", db);
+
 }

@@ -33,6 +33,8 @@ private slots:
 
     void on_btn_deletePhone_clicked();
 
+    void on_btn_AddRepair_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
