@@ -37,19 +37,30 @@ void MainWindow::on_btn_AddPhone_clicked()
 
 void MainWindow::on_btn_WriteXML_clicked()
 {
-    // Escribimos el XML
-    QDomDocument document;
 
+    QDomDocument document;
     QDomElement root = document.createElement("Phones");
 
-    // lo añadimos al archivo
+
+    // --- Consulta para poner los moviles disponibles ---
+    QSqlQuery query("SELECT * FROM availablephones", db);
+    while(query.next())
+    {
+        // --------- Escribimos el XML --------
+        QDomElement phone = document.createElement("Phone");
+        QDomElement namePhone = document.createElement("Name");
+        QString availablePhone = query.value(0).toString();
+        QDomText namePhoneText = document.createTextNode(availablePhone);
+
+        //------- añadimos ------
+        namePhone.appendChild(namePhoneText);
+        phone.appendChild(namePhone);
+        root.appendChild(phone);
+    }
+
     document.appendChild(root);
 
-    QDomElement phone = document.createElement("Phone");
-    root.appendChild(phone);
 
-    QDomElement namePhone = document.createElement("Name");
-    phone.appendChild(namePhone);
 
     //escribimos en el file
     QFile file("AvailablePhones.xml");

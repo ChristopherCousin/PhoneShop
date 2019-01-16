@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 void MainWindow::loadXML()
 {
     // Cargar el XML como RAW Data
-    QFile f("xml.xml");
+    QFile f("AvailablePhones.xml");
     if (!f.open(QIODevice::ReadOnly ))
     {
         // Error
@@ -44,7 +44,7 @@ void MainWindow::readXML()
     {
 
         // Si el tag del nombre del hijo es PHONE
-        if (Component.tagName() == "PHONE")
+        if (Component.tagName() == "Phones")
         {
 
             // Cogemos el primer hijo de phone
@@ -58,8 +58,7 @@ void MainWindow::readXML()
             {
 
                 // leemos el nombre
-                if (Child.tagName()=="NAME") Name=Child.firstChild().toText().data();
-
+                if (Child.tagName()=="Name") Name = Child.firstChild().toText().data();
 
                 // siguiente hijo
                 Child = Child.nextSibling().toElement();
