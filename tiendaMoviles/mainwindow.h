@@ -5,6 +5,8 @@
 #include <QtXml>
 #include <QFile>
 #include <iostream>
+#include "websocket.h"
+
 
 namespace Ui {
 class MainWindow;

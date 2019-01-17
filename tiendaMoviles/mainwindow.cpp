@@ -13,6 +13,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::loadXML()
 {
     // Cargar el XML como RAW Data
@@ -80,4 +81,8 @@ void MainWindow::on_pushButton_clicked()
 {
     loadXML();
     readXML();
+
+
+    web.onConnected();
+    web.onTextMessageReceived("asd");
 }

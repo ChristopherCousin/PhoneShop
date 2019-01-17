@@ -25,10 +25,12 @@ QT += xml
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    websocket.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    websocket.h
 
 FORMS += \
         mainwindow.ui
