@@ -23,6 +23,8 @@ public:
     ~MainWindow();
     void connectDataBase();
     void availablePhones();
+    void writephonesXML();
+    void writerepairsXML();
     QSqlDatabase db;
 
 private slots:
