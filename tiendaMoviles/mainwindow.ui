@@ -27,8 +27,8 @@
        <widget class="QPushButton" name="pushButton_2">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>210</y>
+          <x>170</x>
+          <y>180</y>
           <width>151</width>
           <height>41</height>
          </rect>
@@ -42,39 +42,11 @@
          <string>Send</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>44</y>
-          <width>311</width>
-          <height>32</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>50</y>
-          <width>121</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Client Name:</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_3">
         <property name="geometry">
          <rect>
-          <x>22</x>
-          <y>91</y>
+          <x>20</x>
+          <y>60</y>
           <width>91</width>
           <height>18</height>
          </rect>
@@ -92,7 +64,7 @@
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>84</y>
+          <y>55</y>
           <width>311</width>
           <height>32</height>
          </rect>
@@ -102,7 +74,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>144</y>
+          <y>100</y>
           <width>131</width>
           <height>21</height>
          </rect>
@@ -120,7 +92,7 @@
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>137</y>
+          <y>96</y>
           <width>311</width>
           <height>32</height>
          </rect>
@@ -132,7 +104,7 @@
           <x>10</x>
           <y>30</y>
           <width>471</width>
-          <height>161</height>
+          <height>131</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -166,8 +138,6 @@ color: white;
        </widget>
        <zorder>label</zorder>
        <zorder>pushButton_2</zorder>
-       <zorder>lineEdit</zorder>
-       <zorder>label_2</zorder>
        <zorder>label_3</zorder>
        <zorder>comboBox</zorder>
        <zorder>label_4</zorder>

@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 QT += xml
 QT += websockets
+QT += core
 
 SOURCES += \
         main.cpp \

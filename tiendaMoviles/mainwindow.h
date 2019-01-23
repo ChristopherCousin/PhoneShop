@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDebug>
 #include <iostream>
+#include <QUuid>
 #include "websocket.h"
 
 
@@ -21,14 +22,19 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void loadXML();
-    void readXML();
+    void readPhonesXML();
+    void readRepairsXML();
+    void writeOrderXML();
 
 
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
+    QDomDocument xmlRepairs;
 
 private slots:
     void go();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;
