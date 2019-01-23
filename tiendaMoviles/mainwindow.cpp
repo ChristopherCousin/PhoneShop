@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     QTimer::singleShot(0,this,SLOT(go()));
+    loadXML();
+    readXML();
 }
 
 MainWindow::~MainWindow()
@@ -85,10 +87,3 @@ void MainWindow::readXML()
 
 }
 
-
-void MainWindow::on_pushButton_clicked()
-{
-    loadXML();
-    readXML();
-
-}

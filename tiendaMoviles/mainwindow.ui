@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>511</width>
-    <height>413</height>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -268,7 +268,7 @@ color: white;
           <x>10</x>
           <y>140</y>
           <width>471</width>
-          <height>161</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -300,29 +300,11 @@ color: white;
          <string>Order Details</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_11">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>170</y>
-          <width>121</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Client Name:</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_12">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>200</y>
+          <x>30</x>
+          <y>170</y>
           <width>131</width>
           <height>18</height>
          </rect>
@@ -334,42 +316,6 @@ color: white;
         </property>
         <property name="text">
          <string>Status of Order:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_13">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>230</y>
-          <width>191</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Estimate time to finish:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_14">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>260</y>
-          <width>291</width>
-          <height>18</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Estimate time to arrive to the shop:</string>
         </property>
        </widget>
       </widget>
