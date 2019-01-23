@@ -6,12 +6,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QTimer::singleShot(0,this,SLOT(go()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+void MainWindow::go()
+{
+    qDebug() << "go():";
+    m_webSocket = new Websocket(QUrl("ws://localhost:3344"));
+}
+
 
 
 void MainWindow::loadXML()
@@ -82,7 +91,4 @@ void MainWindow::on_pushButton_clicked()
     loadXML();
     readXML();
 
-
-    web.onConnected();
-    web.onTextMessageReceived("asd");
 }

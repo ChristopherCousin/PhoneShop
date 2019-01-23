@@ -1,19 +1,27 @@
 #ifndef WEBSOCKET_H
 #define WEBSOCKET_H
 
+#include <QWebSocket>
+#include <QObject>
 #include <QString>
-#include <QUrl>
 #include <QDebug>
+#include <QUrl>
 
-class websocket
+
+class Websocket : public QObject
 {
+    Q_OBJECT
 public:
-    websocket();
+    Websocket(QUrl uri, QObject *parent = nullptr);
+
+public slots:
     void onConnected();
-    void onTextMessageReceived(QString message);
+    //void onTextMessageReceived(QString message);
 
 private:
-    websocket *web;
+    QWebSocket *m_webSocket;
+    QUrl m_uri;
+
 };
 
 #endif // WEBSOCKET_H

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtXml>
 #include <QFile>
+#include <QDebug>
 #include <iostream>
 #include "websocket.h"
 
@@ -28,9 +29,11 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void go();
 
 private:
     Ui::MainWindow *ui;
+    Websocket *m_webSocket;
 };
 
 #endif // MAINWINDOW_H
