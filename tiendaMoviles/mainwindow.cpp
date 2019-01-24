@@ -6,10 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QTimer::singleShot(0,this,SLOT(go()));
+    //QTimer::singleShot(0,this,SLOT(go()));
     loadXML();
     readPhonesXML();
-    readRepairsXML();
 }
 
 MainWindow::~MainWindow()
@@ -82,7 +81,7 @@ void MainWindow::readPhonesXML()
                 // leemos el nombre
                 if (Child.tagName()=="Name") Name = Child.firstChild().toText().data();
 
-                // siguiente hijo
+
                 Child = Child.nextSibling().toElement();
             }
 
@@ -110,20 +109,27 @@ void MainWindow::readRepairsXML()
 
             QDomElement Child = Component.firstChild().toElement();
 
-            QString Name;
-
+            QString name;
+            QString repair;
             while (!Child.isNull())
             {
 
-                if (Child.tagName()=="Name") Name = Child.firstChild().toText().data();
+                if (Child.tagName()=="Name") name = Child.firstChild().toText().data();
+                if(name == ui->comboBox->currentText())
+                {
+                    Child = Child.nextSibling().toElement();
 
-                if(Name == ui->comboBox->currentText()) {
-                    qDebug() << Name << "  " << ui->comboBox->currentText();
+                    if (Child.tagName()=="Repair")
+                    {
+                        repair = Child.firstChild().toText().data();
+                        ui->comboBox_2->addItem(repair);
+                    }
                 }
-                Child = Child.nextSibling().toElement();
-            }
 
-            ui->comboBox_2->addItem(Name.toStdString().c_str());
+
+                Child = Child.nextSibling().toElement();
+
+            }
 
         }
 
@@ -180,4 +186,10 @@ void MainWindow::writeOrderXML()
 void MainWindow::on_pushButton_2_clicked()
 {
     writeOrderXML();
+}
+
+void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    ui->comboBox_2->clear();
+    readRepairsXML();
 }
