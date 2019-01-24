@@ -13,18 +13,10 @@ Websocket::Websocket(QUrl uri, QObject *parent) :
 void Websocket::onConnected()
 {
     qDebug() << "WebSocket connected";
-    /*
-    connect(&m_webSocket, &QWebSocket::textMessageReceived,
-            this, &EchoClient::onTextMessageReceived);
-    m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
-    */
+
 }
 
-/*
-void Websocket::onTextMessageReceived(QString message)
+void Websocket::sendXML(QString xml)
 {
-    if (m_debug)
-        qDebug() << "Message received:" << message;
-    m_webSocket.close();
+    m_webSocket->sendTextMessage(QString(xml));
 }
-*/

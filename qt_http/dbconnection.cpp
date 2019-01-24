@@ -16,6 +16,6 @@ void DbConnection::connectDataBase()
     bool ok = db.open();
 
     if(!ok){
-        QMessageBox::information(this, "Warning", "Failed to connect to the DataBase");
+
     }
 }

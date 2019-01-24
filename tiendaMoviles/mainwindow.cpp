@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //QTimer::singleShot(0,this,SLOT(go()));
+    QTimer::singleShot(0,this,SLOT(go()));
     loadXML();
     readPhonesXML();
 }
@@ -24,11 +24,12 @@ void MainWindow::go()
 
 
 
+
 void MainWindow::loadXML()
 {
     // Cargar el XML como RAW Data
     QFile f("AvailablePhones.xml");
-    if (!f.open(QIODevice::ReadOnly ))
+    if (!f.open(QIODevice::ReadOnly))
     {
         // Error
         std::cerr << "Error while loading file" << std::endl;
@@ -36,11 +37,12 @@ void MainWindow::loadXML()
 
     // Ponemos la data dentro del QDomDocument antes de procesarlo
     xmlBOM.setContent(&f);
+
     f.close();
 
 
     QFile repairs("AvailableRepairs.xml");
-    if (!f.open(QIODevice::ReadOnly ))
+    if (!f.open(QIODevice::ReadOnly))
     {
         // Error
         std::cerr << "Error while loading repairs XML file" << std::endl;
@@ -169,6 +171,7 @@ void MainWindow::writeOrderXML()
             document.appendChild(root);
 
 
+ m_webSocket->sendXML(document.toString());
 
         //escribimos en el file
         QFile file("newOrder.xml");
@@ -178,8 +181,12 @@ void MainWindow::writeOrderXML()
         } else {
             QTextStream stream(&file);
             stream << document.toString();
+
+
+
             file.close();
         }
+
 }
 
 

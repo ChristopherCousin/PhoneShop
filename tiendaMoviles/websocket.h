@@ -13,10 +13,11 @@ class Websocket : public QObject
     Q_OBJECT
 public:
     Websocket(QUrl uri, QObject *parent = nullptr);
+    void sendXML(QString xml);
 
 public slots:
     void onConnected();
-    //void onTextMessageReceived(QString message);
+
 
 private:
     QWebSocket *m_webSocket;

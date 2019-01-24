@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
+    <width>518</width>
     <height>362</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -288,6 +288,14 @@ color: white;
          <string>Status of Order:</string>
         </property>
        </widget>
+       <zorder>label_7</zorder>
+       <zorder>label_6</zorder>
+       <zorder>lineEdit_2</zorder>
+       <zorder>label_8</zorder>
+       <zorder>pushButton_3</zorder>
+       <zorder>label_9</zorder>
+       <zorder>label_10</zorder>
+       <zorder>label_12</zorder>
       </widget>
      </widget>
     </item>
@@ -298,7 +306,7 @@ color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>511</width>
+     <width>518</width>
      <height>30</height>
     </rect>
    </property>
