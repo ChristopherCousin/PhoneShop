@@ -35,7 +35,6 @@ void MainWindow::loadXML()
         std::cerr << "Error while loading file" << std::endl;
     }
 
-    // Ponemos la data dentro del QDomDocument antes de procesarlo
     xmlBOM.setContent(&f);
 
     f.close();
@@ -67,7 +66,7 @@ void MainWindow::readPhonesXML()
     while(!Component.isNull())
     {
 
-        // Si el tag del nombre del hijo es PHONE
+
         if (Component.tagName() == "Phone")
         {
 
