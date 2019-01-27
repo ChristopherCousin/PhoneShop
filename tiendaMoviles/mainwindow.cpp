@@ -136,7 +136,7 @@ void MainWindow::readRepairsXML()
 
         Component = Component.nextSibling().toElement();
     }
-    }
+}
 
 void MainWindow::writeOrderXML()
 {
@@ -170,7 +170,7 @@ void MainWindow::writeOrderXML()
             document.appendChild(root);
 
 
- m_webSocket->sendXML(document.toString());
+        m_webSocket->sendXML(document.toString());
 
         //escribimos en el file
         QFile file("newOrder.xml");

@@ -4,6 +4,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
+#include <QFile>
+#include <QXmlStreamReader>
+#include <iostream>
+#include <QDomDocument>
+#include <QSqlQuery>
+#include <QSql>
 
 class QWebSocketServer;
 class QWebSocket;
@@ -16,6 +22,10 @@ class TestServer : public QObject
 public:
     explicit TestServer(quint16 port);
     ~TestServer();
+    void readOrderXML();
+    QDomDocument newOrderXML;
+    QSqlDatabase db;
+    void connectDatabase();
 
 signals:
     void closed();
