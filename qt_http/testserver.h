@@ -23,6 +23,7 @@ public:
     explicit TestServer(quint16 port);
     ~TestServer();
     void newOrder();
+    void findOrder();
     QDomDocument newOrderXML;
     QDomDocument findOrderXML;
     QSqlDatabase db;

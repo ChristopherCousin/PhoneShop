@@ -2,6 +2,7 @@
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
 #include <QtCore/QDebug>
+#include <QSqlError>
 
 TestServer::TestServer(quint16 port) :
     m_pWebSocketServer(new QWebSocketServer(QStringLiteral("Test Server"),
@@ -113,6 +114,8 @@ void TestServer::newOrder()
         }
         Component = Component.nextSibling().toElement();
         QSqlQuery query("INSERT INTO orders(statusorders,phoneorders,repairorders,orderidorders) values('in process','" + phone + "', '" + repair + "', '" + idorder + "');", db);
+
+        qDebug() << query.isValid();
     }
 
 }
@@ -137,7 +140,6 @@ void TestServer::findOrder()
         }
         Component = Component.nextSibling().toElement();
         QSqlQuery query("SELECT statusorders FROM orders where orderidorders = '" +idorder+ "';", db);
-
     }
 
 }
