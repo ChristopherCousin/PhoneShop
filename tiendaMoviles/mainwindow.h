@@ -25,6 +25,7 @@ public:
     void readPhonesXML();
     void readRepairsXML();
     void writeOrderXML();
+    void writeFindOrderXML();
 
 
     // el qdomdocumento representara un documento xml
@@ -37,6 +38,8 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_comboBox_currentTextChanged(const QString &arg1);
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -55,25 +55,41 @@ void TestServer::onNewConnection()
 void TestServer::processTextMessage(QString message)
 {
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-    qDebug() << "1";
-    qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
+    qDebug() << "De:" << pClient << "Mensaje recibido:" << message.mid(0,5);
 
-    QFile file("newOrder.xml");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    if(message.mid(0,5) == "order")
     {
-        qDebug() << "Failed to open file for writting";
-    } else {
-        QTextStream stream(&file);
-        stream << message;
-        file.close();
+        message.remove(0,5);
+        QFile file("newOrder.xml");
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        } else {
+            QTextStream stream(&file);
+            stream << message;
+            file.close();
+        }
+        newOrderXML.setContent(&file);
+        newOrder();
     }
-    newOrderXML.setContent(&file);
-    readOrderXML();
-    qDebug() << "1";
-
+    else if(message.mid(0,5) == "find ")
+    {
+        message.remove(0,5);
+        QFile file("findOrder.xml");
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        } else {
+            QTextStream stream(&file);
+            stream << message;
+            file.close();
+        }
+        findOrderXML.setContent(&file);
+        findOrder();
+    }
 }
 
-void TestServer::readOrderXML()
+void TestServer::newOrder()
 {
     QDomElement root = newOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
@@ -82,7 +98,6 @@ void TestServer::readOrderXML()
     QString phone;
     while(!Component.isNull())
     {
-        qDebug() << "2";
         if (Component.tagName() == "Order")
         {
             QDomElement Child = Component.firstChild().toElement();
@@ -98,7 +113,31 @@ void TestServer::readOrderXML()
         }
         Component = Component.nextSibling().toElement();
         QSqlQuery query("INSERT INTO orders(statusorders,phoneorders,repairorders,orderidorders) values('in process','" + phone + "', '" + repair + "', '" + idorder + "');", db);
-        qDebug() << query.result() << "asd";
+    }
+
+}
+
+void TestServer::findOrder()
+{
+    QDomElement root = newOrderXML.documentElement();
+    QDomElement Component = root.firstChild().toElement();
+    QString idorder;
+    while(!Component.isNull())
+    {
+        if (Component.tagName() == "Order")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+            while (!Child.isNull())
+            {
+                if (Child.tagName()=="IdOrder") idorder = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+        Component = Component.nextSibling().toElement();
+        QSqlQuery query("SELECT statusorders FROM orders where orderidorders = '" +idorder+ "';", db);
+
     }
 
 }

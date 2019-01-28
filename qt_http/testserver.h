@@ -22,8 +22,9 @@ class TestServer : public QObject
 public:
     explicit TestServer(quint16 port);
     ~TestServer();
-    void readOrderXML();
+    void newOrder();
     QDomDocument newOrderXML;
+    QDomDocument findOrderXML;
     QSqlDatabase db;
     void connectDatabase();
 

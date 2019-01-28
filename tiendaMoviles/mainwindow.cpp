@@ -169,8 +169,8 @@ void MainWindow::writeOrderXML()
             root.appendChild(order);
             document.appendChild(root);
 
-
-        m_webSocket->sendXML(document.toString());
+        QString message = "order" + document.toString();
+        m_webSocket->sendXML(message);
 
         //escribimos en el file
         QFile file("newOrder.xml");
@@ -188,6 +188,41 @@ void MainWindow::writeOrderXML()
 
 }
 
+void MainWindow::writeFindOrderXML()
+{
+
+        QDomDocument document;
+        QDomElement root = document.createElement("Orders");
+
+
+            QDomElement order = document.createElement("Order");
+            QDomElement idorder = document.createElement("IdOrder");
+
+
+            QDomText idordertxt = document.createTextNode(ui->lineEdit_2->text());
+
+
+            idorder.appendChild(idordertxt);
+            order.appendChild(idorder);
+            root.appendChild(order);
+            document.appendChild(root);
+
+        QString message = "find " + document.toString();
+        m_webSocket->sendXML(message);
+
+        //escribimos en el file
+        QFile file("FindOrder.xml");
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        } else {
+            QTextStream stream(&file);
+            stream << document.toString();
+
+            file.close();
+        }
+
+}
 
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -198,4 +233,9 @@ void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
 {
     ui->comboBox_2->clear();
     readRepairsXML();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
 }
