@@ -10,6 +10,9 @@
 #include <QDomDocument>
 #include <QSqlQuery>
 #include <QSql>
+#include <QtXmlPatterns/QXmlSchema>
+#include <QtXmlPatterns/QXmlSchemaValidator>
+#include <QXmlSchema>
 
 class QWebSocketServer;
 class QWebSocket;
@@ -28,6 +31,7 @@ public:
     QDomDocument findOrderXML;
     QSqlDatabase db;
     void connectDatabase();
+    bool validatexml(QString xml, QString xsd);
 
 signals:
     void closed();
