@@ -18,6 +18,7 @@ TestServer::TestServer(quint16 port)
 
     connectDatabase();
 
+    validatexml("newOrder.xml", "newOrder.xsd");
 }
 
 
@@ -241,6 +242,30 @@ bool TestServer::validatexml(QString xml, QString xsd)
         qDebug() << "schema is invalid";
         return false;
     } // END IF
+}
+
+bool TestServer::validatexml(QString xml, QString xsd)
+{
+    QFile file(xsd);
+          file.open(QIODevice::ReadOnly);
+
+          QXmlSchema schema;
+          schema.load(&file, QUrl::fromLocalFile(file.fileName()));
+
+          if (schema.isValid())
+          {
+              QFile file2(xml);
+              file2.open(QIODevice::ReadOnly);
+
+              QXmlSchemaValidator validator(schema);
+              if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+                  qDebug() << "instance document is valid";
+              else
+                  qDebug() << "instance document is invalid";
+
+          } else {
+              qDebug() << "schema is invalid";
+          }
 }
 
 void TestServer::socketDisconnected()
