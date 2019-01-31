@@ -4,20 +4,22 @@
 #include <QtCore/QDebug>
 #include <QSqlError>
 
-TestServer::TestServer(quint16 port) :
-    m_pWebSocketServer(new QWebSocketServer(QStringLiteral("Test Server"),
-                                            QWebSocketServer::NonSecureMode, this))
+TestServer::TestServer(quint16 port)
+    : m_pWebSocketServer(new QWebSocketServer(
+          QStringLiteral("Test Server"), QWebSocketServer::NonSecureMode, this))
 {
-
     if (m_pWebSocketServer->listen(QHostAddress::Any, port))
     {
         qDebug() << "Server iniciado en puerto:" << port;
-        connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &TestServer::onNewConnection);
+        connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this,
+            &TestServer::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &TestServer::closed);
     } // end if
 
     connectDatabase();
+
 }
+
 
 
 TestServer::~TestServer()
@@ -26,23 +28,22 @@ TestServer::~TestServer()
     qDeleteAll(m_clients.begin(), m_clients.end());
 }
 
-
-void TestServer::connectDatabase(){
-
-        db = QSqlDatabase::addDatabase("QPSQL");
-        db.setHostName("127.0.0.1");
-        db.setPort(5432);
-        db.setDatabaseName("phoneshop");
-        db.setUserName("usuario");
-        db.setPassword("usuario");
-        bool ok = db.open();
-        if(!ok){
-
-        }
+void TestServer::connectDatabase()
+{
+    db = QSqlDatabase::addDatabase("QPSQL");
+    db.setHostName("127.0.0.1");
+    db.setPort(5432);
+    db.setDatabaseName("phoneshop");
+    db.setUserName("usuario");
+    db.setPassword("usuario");
+    bool ok = db.open();
+    if (!ok)
+    {
+    }
 }
 void TestServer::onNewConnection()
 {
-    QWebSocket *pSocket = m_pWebSocketServer->nextPendingConnection();
+    QWebSocket* pSocket = m_pWebSocketServer->nextPendingConnection();
 
     qDebug() << "Socket conectado:" << pSocket;
 
@@ -55,39 +56,52 @@ void TestServer::onNewConnection()
 
 void TestServer::processTextMessage(QString message)
 {
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-    qDebug() << "De:" << pClient << "Mensaje recibido:" << message.mid(0,5);
+    QString respuesta;
+    QWebSocket* pClient = qobject_cast<QWebSocket*>(sender());
+    qDebug() << "De:" << pClient << "Mensaje recibido:" << message.mid(0, 5);
 
-    if(message.mid(0,5) == "order")
+    if (message.mid(0, 5) == "order")
     {
-        message.remove(0,5);
+        message.remove(0, 5);
         QFile file("newOrder.xml");
-        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
-        } else {
+        }
+        else
+        {
             QTextStream stream(&file);
             stream << message;
             file.close();
         }
         newOrderXML.setContent(&file);
-        newOrder();
+        if (validatexml("newOrder.xml", "newOrder.xsd"))
+        {
+            newOrder();
+        }
     }
-    else if(message.mid(0,5) == "find ")
+    else if (message.mid(0, 5) == "find ")
     {
-        message.remove(0,5);
+        message.remove(0, 5);
         QFile file("findOrder.xml");
-        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
-        } else {
+        }
+        else
+        {
             QTextStream stream(&file);
             stream << message;
             file.close();
         }
         findOrderXML.setContent(&file);
-        findOrder();
+        if (validatexml("findOrder.xml", "findOrder.xsd"))
+        {
+            respuesta = findOrder();
+            pClient->sendTextMessage(respuesta);
+        }
     }
+
 }
 
 void TestServer::newOrder()
@@ -97,7 +111,7 @@ void TestServer::newOrder()
     QString idorder;
     QString repair;
     QString phone;
-    while(!Component.isNull())
+    while (!Component.isNull())
     {
         if (Component.tagName() == "Order")
         {
@@ -105,27 +119,36 @@ void TestServer::newOrder()
 
             while (!Child.isNull())
             {
-                if (Child.tagName()=="IdOrder") idorder = Child.firstChild().toText().data();
-                if (Child.tagName()=="repair") repair = Child.firstChild().toText().data();
-                if (Child.tagName()=="Phone") phone = Child.firstChild().toText().data();
+                if (Child.tagName() == "IdOrder")
+                    idorder = Child.firstChild().toText().data();
+                if (Child.tagName() == "repair")
+                    repair = Child.firstChild().toText().data();
+                if (Child.tagName() == "Phone")
+                    phone = Child.firstChild().toText().data();
 
                 Child = Child.nextSibling().toElement();
             }
         }
         Component = Component.nextSibling().toElement();
-        QSqlQuery query("INSERT INTO orders(statusorders,phoneorders,repairorders,orderidorders) values('in process','" + phone + "', '" + repair + "', '" + idorder + "');", db);
+
+
+        QSqlQuery query("INSERT INTO "
+                        "orders(statusorders,phoneorders,repairorders,"
+                        "orderidorders,dateorders) values('in process','"
+                + phone + "', '" + repair + "', '" + idorder + "',current_timestamp);",
+            db);
+
 
         qDebug() << query.isValid();
     }
-
 }
 
-void TestServer::findOrder()
+QString TestServer::findOrder()
 {
-    QDomElement root = newOrderXML.documentElement();
+    QDomElement root = findOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder;
-    while(!Component.isNull())
+    while (!Component.isNull())
     {
         if (Component.tagName() == "Order")
         {
@@ -133,20 +156,96 @@ void TestServer::findOrder()
 
             while (!Child.isNull())
             {
-                if (Child.tagName()=="IdOrder") idorder = Child.firstChild().toText().data();
+                if (Child.tagName() == "IdOrder")
+                    idorder = Child.firstChild().toText().data();
 
                 Child = Child.nextSibling().toElement();
             }
         }
         Component = Component.nextSibling().toElement();
-        QSqlQuery query("SELECT statusorders FROM orders where orderidorders = '" +idorder+ "';", db);
+        checkProcessOrders();
+        QSqlQuery query(
+            "SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
+        while (query.next())
+        {
+            return query.value(0).toString();
+        }
     }
+}
 
+void TestServer::checkProcessOrders()
+{
+    QSqlQuery query(
+        "SELECT orderidorders,EXTRACT(EPOCH FROM (NOW() - dateorders)),statusorders FROM orders WHERE statusorders = 'in process'", db);
+    while (query.next())
+    {
+        if(query.value(1).toString() >= 7200 && query.value(2).toString() == "in process")
+        {
+            QSqlQuery query2(
+                "UPDATE orders SET statusorders = 'done' where orderidorders = '" +query.value(0).toString() + "';", db);
+        }
+    }
+}
+
+void TestServer::checkQueueOrders()
+{
+    int queue = 0;
+    QSqlQuery query(
+        "SELECT orderidorders,statusorders FROM orders WHERE statusorders != 'done'", db);
+    while (query.next())
+    {
+        if(query.value(1).toString() == "in process")
+        {
+            if(queue == 0)
+            {
+                queue++;
+            } else {
+
+                queue++;
+            }
+
+        } else {
+            queue--;
+        }
+    }
+}
+
+
+bool TestServer::validatexml(QString xml, QString xsd)
+{
+    QFile file(xsd);
+    file.open(QIODevice::ReadOnly);
+
+    QXmlSchema schema;
+    schema.load(&file, QUrl::fromLocalFile(file.fileName()));
+
+    if (schema.isValid())
+    {
+        QFile file2(xml);
+        file2.open(QIODevice::ReadOnly);
+
+        QXmlSchemaValidator validator(schema);
+        if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+        {
+            qDebug() << "instance document is valid";
+            return true;
+        }
+        else
+        {
+            qDebug() << "instance document is invalid";
+
+        } // END IF
+    }
+    else
+    {
+        qDebug() << "schema is invalid";
+        return false;
+    } // END IF
 }
 
 void TestServer::socketDisconnected()
 {
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    QWebSocket* pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "Socket desconectado:" << pClient;
 
     if (pClient)

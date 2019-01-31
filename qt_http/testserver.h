@@ -10,6 +10,10 @@
 #include <QDomDocument>
 #include <QSqlQuery>
 #include <QSql>
+#include <QtXmlPatterns/QXmlSchema>
+#include <QtXmlPatterns/QXmlSchemaValidator>
+#include <QXmlSchema>
+#include <QCoreApplication>
 
 class QWebSocketServer;
 class QWebSocket;
@@ -23,11 +27,15 @@ public:
     explicit TestServer(quint16 port);
     ~TestServer();
     void newOrder();
-    void findOrder();
+    QString findOrder();
     QDomDocument newOrderXML;
     QDomDocument findOrderXML;
     QSqlDatabase db;
     void connectDatabase();
+    bool validatexml(QString xml, QString xsd);
+    void checkProcessOrders();
+    void checkQueueOrders();
+    void sendXML(QString xml);
 
 signals:
     void closed();

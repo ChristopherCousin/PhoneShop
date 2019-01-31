@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QTimer::singleShot(0,this,SLOT(go()));
+    QTimer::singleShot(0, this, SLOT(go()));
     loadXML();
     readPhonesXML();
 }
@@ -21,8 +21,6 @@ void MainWindow::go()
 {
     m_webSocket = new Websocket(QUrl("ws://localhost:3344"));
 }
-
-
 
 
 void MainWindow::loadXML()
@@ -50,7 +48,6 @@ void MainWindow::loadXML()
 
     xmlRepairs.setContent(&repairs);
     repairs.close();
-
 }
 
 void MainWindow::readPhonesXML()
@@ -63,7 +60,7 @@ void MainWindow::readPhonesXML()
 
 
     // Loop mientras haya un hijo
-    while(!Component.isNull())
+    while (!Component.isNull())
     {
 
 
@@ -80,7 +77,8 @@ void MainWindow::readPhonesXML()
             {
 
                 // leemos el nombre
-                if (Child.tagName()=="Name") Name = Child.firstChild().toText().data();
+                if (Child.tagName() == "Name")
+                    Name = Child.firstChild().toText().data();
 
 
                 Child = Child.nextSibling().toElement();
@@ -88,7 +86,6 @@ void MainWindow::readPhonesXML()
 
             // ponemos en el comboBox los moviles disponibles
             ui->comboBox->addItem(Name.toStdString().c_str());
-
         }
 
 
@@ -103,7 +100,7 @@ void MainWindow::readRepairsXML()
 
     QDomElement Component = root.firstChild().toElement();
 
-    while(!Component.isNull())
+    while (!Component.isNull())
     {
         if (Component.tagName() == "Phone")
         {
@@ -115,12 +112,13 @@ void MainWindow::readRepairsXML()
             while (!Child.isNull())
             {
 
-                if (Child.tagName()=="Name") name = Child.firstChild().toText().data();
-                if(name == ui->comboBox->currentText())
+                if (Child.tagName() == "Name")
+                    name = Child.firstChild().toText().data();
+                if (name == ui->comboBox->currentText())
                 {
                     Child = Child.nextSibling().toElement();
 
-                    if (Child.tagName()=="Repair")
+                    if (Child.tagName() == "Repair")
                     {
                         repair = Child.firstChild().toText().data();
                         ui->comboBox_2->addItem(repair);
@@ -129,9 +127,7 @@ void MainWindow::readRepairsXML()
 
 
                 Child = Child.nextSibling().toElement();
-
             }
-
         }
 
         Component = Component.nextSibling().toElement();
@@ -141,101 +137,105 @@ void MainWindow::readRepairsXML()
 void MainWindow::writeOrderXML()
 {
 
-        QDomDocument document;
-        QDomElement root = document.createElement("Orders");
+    QDomDocument document;
+    QDomElement root = document.createElement("Orders");
 
 
-            QDomElement order = document.createElement("Order");
-            QDomElement idorder = document.createElement("IdOrder");
-            QDomElement phone = document.createElement("Phone");
-            QDomElement repair = document.createElement("repair");
+    QDomElement order = document.createElement("Order");
+    QDomElement idorder = document.createElement("IdOrder");
+    QDomElement phone = document.createElement("Phone");
+    QDomElement repair = document.createElement("repair");
 
 
-            QUuid idordert = QUuid::createUuid();
-            QString phonet = ui->comboBox->currentText();
-            QString repairt = ui->comboBox_2->currentText();
+    QUuid idordert = QUuid::createUuid();
+    QString phonet = ui->comboBox->currentText();
+    QString repairt = ui->comboBox_2->currentText();
 
-            QDomText idordertxt = document.createTextNode(idordert.toString());
-            QDomText phonetxt = document.createTextNode(phonet);
-            QDomText repairtxt = document.createTextNode(repairt);
-
-
-            idorder.appendChild(idordertxt);
-            repair.appendChild(repairtxt);
-            phone.appendChild(phonetxt);
-            order.appendChild(idorder);
-            order.appendChild(repair);
-            order.appendChild(phone);
-            root.appendChild(order);
-            document.appendChild(root);
-
-        QString message = "order" + document.toString();
-        m_webSocket->sendXML(message);
-
-        //escribimos en el file
-        QFile file("newOrder.xml");
-        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        } else {
-            QTextStream stream(&file);
-            stream << document.toString();
+    QDomText idordertxt = document.createTextNode(idordert.toString());
+    QDomText phonetxt = document.createTextNode(phonet);
+    QDomText repairtxt = document.createTextNode(repairt);
 
 
+    idorder.appendChild(idordertxt);
+    repair.appendChild(repairtxt);
+    phone.appendChild(phonetxt);
+    order.appendChild(idorder);
+    order.appendChild(repair);
+    order.appendChild(phone);
+    root.appendChild(order);
+    document.appendChild(root);
 
-            file.close();
-        }
+    QString message = "order" + document.toString();
+    m_webSocket->sendXML(message);
 
+    // escribimos en el file
+    QFile file("newOrder.xml");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writting";
+    }
+    else
+    {
+        QTextStream stream(&file);
+        stream << document.toString();
+
+
+        file.close();
+    }
 }
 
 void MainWindow::writeFindOrderXML()
 {
 
-        QDomDocument document;
-        QDomElement root = document.createElement("Orders");
+    QDomDocument document;
+    QDomElement root = document.createElement("Orders");
 
 
-            QDomElement order = document.createElement("Order");
-            QDomElement idorder = document.createElement("IdOrder");
+    QDomElement order = document.createElement("Order");
+    QDomElement idorder = document.createElement("IdOrder");
 
 
-            QDomText idordertxt = document.createTextNode(ui->lineEdit_2->text());
+    QDomText idordertxt = document.createTextNode(ui->lineEdit_2->text());
 
 
-            idorder.appendChild(idordertxt);
-            order.appendChild(idorder);
-            root.appendChild(order);
-            document.appendChild(root);
+    idorder.appendChild(idordertxt);
+    order.appendChild(idorder);
+    root.appendChild(order);
+    document.appendChild(root);
 
-        QString message = "find " + document.toString();
-        m_webSocket->sendXML(message);
+    QString message = "find " + document.toString();
+    m_webSocket->sendXML(message);
 
-        //escribimos en el file
-        QFile file("FindOrder.xml");
-        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        } else {
-            QTextStream stream(&file);
-            stream << document.toString();
+    // escribimos en el file
+    QFile file("FindOrder.xml");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writting";
+    }
+    else
+    {
+        QTextStream stream(&file);
+        stream << document.toString();
 
-            file.close();
-        }
-
+        file.close();
+    }
 }
 
-void MainWindow::on_pushButton_2_clicked()
-{
-    writeOrderXML();
-}
-
-void MainWindow::on_comboBox_currentTextChanged(const QString &arg1)
+void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
 {
     ui->comboBox_2->clear();
     readRepairsXML();
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
 
+void MainWindow::on_btn_newRepair_clicked()
+{
+    writeOrderXML();
+}
+
+void MainWindow::on_btn_findOrder_clicked()
+{
+    writeFindOrderXML();
+    ui->result_label->setText(Websocket::statusMessage);
+    qDebug() << Websocket::statusMessage;
 }

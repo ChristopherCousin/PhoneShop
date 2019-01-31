@@ -24,7 +24,7 @@
        <attribute name="title">
         <string>New repair</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="btn_newRepair">
         <property name="geometry">
          <rect>
           <x>170</x>
@@ -137,7 +137,7 @@ color: white;
         </property>
        </widget>
        <zorder>label</zorder>
-       <zorder>pushButton_2</zorder>
+       <zorder>btn_newRepair</zorder>
        <zorder>label_3</zorder>
        <zorder>comboBox</zorder>
        <zorder>label_4</zorder>
@@ -214,7 +214,7 @@ color: white;
          <string>Find Orders</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="btn_findOrder">
         <property name="geometry">
          <rect>
           <x>170</x>
@@ -275,7 +275,7 @@ color: white;
          <rect>
           <x>30</x>
           <y>170</y>
-          <width>131</width>
+          <width>141</width>
           <height>18</height>
          </rect>
         </property>
@@ -288,14 +288,33 @@ color: white;
          <string>Status of Order:</string>
         </property>
        </widget>
+       <widget class="QLabel" name="result_label">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>170</y>
+          <width>191</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <zorder>label_9</zorder>
        <zorder>label_7</zorder>
        <zorder>label_6</zorder>
        <zorder>lineEdit_2</zorder>
        <zorder>label_8</zorder>
-       <zorder>pushButton_3</zorder>
-       <zorder>label_9</zorder>
+       <zorder>btn_findOrder</zorder>
        <zorder>label_10</zorder>
        <zorder>label_12</zorder>
+       <zorder>result_label</zorder>
       </widget>
      </widget>
     </item>

@@ -14,9 +14,11 @@ class Websocket : public QObject
 public:
     Websocket(QUrl uri, QObject *parent = nullptr);
     void sendXML(QString xml);
+    static QString statusMessage;
 
 public slots:
     void onConnected();
+    void processTextMessage(QString message);
 
 
 private:

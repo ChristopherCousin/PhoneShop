@@ -15,6 +15,20 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -48,10 +62,11 @@ ALTER TABLE public.availablerepairs OWNER TO usuario;
 --
 
 CREATE TABLE public.orders (
-    status_orders character varying,
-    phone_orders character varying,
-    repair_orders character varying,
-    orderid_orders uuid
+    statusorders character varying,
+    phoneorders character varying,
+    repairorders character varying,
+    orderidorders uuid,
+    dateorders timestamp with time zone
 );
 
 
@@ -85,7 +100,9 @@ Iphone	Pantalla	200
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
-COPY public.orders (status_orders, phone_orders, repair_orders, orderid_orders) FROM stdin;
+COPY public.orders (statusorders, phoneorders, repairorders, orderidorders, dateorders) FROM stdin;
+done	Iphone	Pantalla	78c626fb-59d8-45fd-91ff-6ea40521bf1d	2019-01-30 20:45:32.740508+01
+done	Iphone 6	asd	531e59b7-eda6-4f0d-a930-3015866f1265	2019-01-30 20:59:02.799716+01
 \.
 
 
