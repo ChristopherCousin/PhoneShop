@@ -292,9 +292,9 @@ color: white;
         <property name="geometry">
          <rect>
           <x>180</x>
-          <y>170</y>
-          <width>191</width>
-          <height>18</height>
+          <y>160</y>
+          <width>251</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="font">
@@ -303,7 +303,7 @@ color: white;
          </font>
         </property>
         <property name="text">
-         <string/>
+         <string>l</string>
         </property>
        </widget>
        <zorder>label_9</zorder>

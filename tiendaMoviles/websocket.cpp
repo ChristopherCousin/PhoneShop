@@ -26,7 +26,5 @@ void Websocket::sendXML(QString xml)
 
 void Websocket::processTextMessage(QString message)
 {
-    message = statusMessage;
-    qDebug() << message;
-    qDebug() << statusMessage;
+    //emit recibirmensaje(message);
 }

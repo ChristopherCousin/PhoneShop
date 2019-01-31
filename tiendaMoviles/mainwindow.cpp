@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer::singleShot(0, this, SLOT(go()));
     loadXML();
     readPhonesXML();
+    //no me ha llegado a funcionar el conector
+    //connect(m_webSocket, SIGNAL(recibirmensaje(QString)), this, SLOT(processTextMessage(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -221,6 +223,12 @@ void MainWindow::writeFindOrderXML()
     }
 }
 
+
+void receiveMessage()
+{
+
+}
+
 void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
 {
     ui->comboBox_2->clear();
@@ -236,6 +244,6 @@ void MainWindow::on_btn_newRepair_clicked()
 void MainWindow::on_btn_findOrder_clicked()
 {
     writeFindOrderXML();
-    ui->result_label->setText(Websocket::statusMessage);
-    qDebug() << Websocket::statusMessage;
+    //ui->result_label->setText(Websocket::statusMessage);
+
 }

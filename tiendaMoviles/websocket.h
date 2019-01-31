@@ -20,6 +20,10 @@ public slots:
     void onConnected();
     void processTextMessage(QString message);
 
+signals:
+
+     //void recibirmensaje(QString);
+
 
 private:
     QWebSocket *m_webSocket;

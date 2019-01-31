@@ -27,12 +27,14 @@ public:
     void writeOrderXML();
     void writeFindOrderXML();
 
-
+    void receiveMessage();
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
     QDomDocument xmlRepairs;
 
+
 private slots:
+    void recibirmensaje(QString);
     void go();
 
     void on_comboBox_currentTextChanged(const QString &arg1);

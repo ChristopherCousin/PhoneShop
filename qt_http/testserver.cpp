@@ -18,7 +18,6 @@ TestServer::TestServer(quint16 port)
 
     connectDatabase();
 
-    validatexml("newOrder.xml", "newOrder.xsd");
 }
 
 
@@ -40,6 +39,7 @@ void TestServer::connectDatabase()
     bool ok = db.open();
     if (!ok)
     {
+
     }
 }
 void TestServer::onNewConnection()
@@ -149,6 +149,7 @@ QString TestServer::findOrder()
     QDomElement root = findOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder;
+    QString result{""};
     while (!Component.isNull())
     {
         if (Component.tagName() == "Order")
@@ -167,11 +168,11 @@ QString TestServer::findOrder()
         checkProcessOrders();
         QSqlQuery query(
             "SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
-        while (query.next())
-        {
-            return query.value(0).toString();
-        }
+        query.next();
+        result = query.value(0).toString();
     }
+
+       return result;
 }
 
 void TestServer::checkProcessOrders()
@@ -201,10 +202,8 @@ void TestServer::checkQueueOrders()
             {
                 queue++;
             } else {
-
                 queue++;
             }
-
         } else {
             queue--;
         }
@@ -212,37 +211,7 @@ void TestServer::checkQueueOrders()
 }
 
 
-bool TestServer::validatexml(QString xml, QString xsd)
-{
-    QFile file(xsd);
-    file.open(QIODevice::ReadOnly);
 
-    QXmlSchema schema;
-    schema.load(&file, QUrl::fromLocalFile(file.fileName()));
-
-    if (schema.isValid())
-    {
-        QFile file2(xml);
-        file2.open(QIODevice::ReadOnly);
-
-        QXmlSchemaValidator validator(schema);
-        if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
-        {
-            qDebug() << "instance document is valid";
-            return true;
-        }
-        else
-        {
-            qDebug() << "instance document is invalid";
-
-        } // END IF
-    }
-    else
-    {
-        qDebug() << "schema is invalid";
-        return false;
-    } // END IF
-}
 
 bool TestServer::validatexml(QString xml, QString xsd)
 {
@@ -259,9 +228,14 @@ bool TestServer::validatexml(QString xml, QString xsd)
 
               QXmlSchemaValidator validator(schema);
               if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+              {
                   qDebug() << "instance document is valid";
-              else
+              return true;
+
+              } else {
                   qDebug() << "instance document is invalid";
+                  return false;
+              }
 
           } else {
               qDebug() << "schema is invalid";
