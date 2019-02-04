@@ -58,7 +58,7 @@ void TestServer::onNewConnection()
 void TestServer::processTextMessage(QString message)
 {
     QString respuesta;
-    QWebSocket* pClient = qobject_cast<QWebSocket*>(sender());
+    pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message.mid(0, 5);
 
     if (message.mid(0, 5) == "order")
@@ -140,7 +140,10 @@ void TestServer::newOrder()
             db);
 
 
-        qDebug() << query.isValid();
+        if(!query.lastError().isValid())
+        {
+            qDebug() << "There was an error in the database";
+        }
     }
 }
 
@@ -169,7 +172,12 @@ QString TestServer::findOrder()
         QSqlQuery query(
             "SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
         query.next();
-        result = query.value(0).toString();
+        if(query.lastError().isValid())
+        {
+            result = "This order does not exist";
+        } else {
+            result = query.value(0).toString();
+        }
     }
 
        return result;
@@ -181,10 +189,18 @@ void TestServer::checkProcessOrders()
         "SELECT orderidorders,EXTRACT(EPOCH FROM (NOW() - dateorders)),statusorders FROM orders WHERE statusorders = 'in process'", db);
     while (query.next())
     {
-        if(query.value(1).toString() >= 7200 && query.value(2).toString() == "in process")
+        if(query.lastError().isValid())
+        {
+            qDebug() << "Error in query checkProcressOrders";
+        }
+        if(query.value(1).toInt() >= 7200 && query.value(2).toString() == "in process")
         {
             QSqlQuery query2(
                 "UPDATE orders SET statusorders = 'done' where orderidorders = '" +query.value(0).toString() + "';", db);
+            if(query2.lastError().isValid())
+            {
+                qDebug() << "Error in query checkProcressOrders";
+            }
         }
     }
 }

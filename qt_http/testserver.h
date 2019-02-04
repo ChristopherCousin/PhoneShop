@@ -14,6 +14,7 @@
 #include <QtXmlPatterns/QXmlSchemaValidator>
 #include <QXmlSchema>
 #include <QCoreApplication>
+#include <QUuid>
 
 
 class QWebSocketServer;
@@ -37,6 +38,7 @@ public:
     void checkProcessOrders();
     void checkQueueOrders();
     void sendXML(QString xml);
+    QWebSocket* pClient;
 
 
 signals:

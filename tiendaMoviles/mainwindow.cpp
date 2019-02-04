@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer::singleShot(0, this, SLOT(go()));
     loadXML();
     readPhonesXML();
-    //no me ha llegado a funcionar el conector
-    //connect(m_webSocket, SIGNAL(recibirmensaje(QString)), this, SLOT(processTextMessage(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +20,7 @@ MainWindow::~MainWindow()
 void MainWindow::go()
 {
     m_webSocket = new Websocket(QUrl("ws://localhost:3344"));
+    connect(m_webSocket, SIGNAL(recibirmensaje(QString)), this, SLOT(recibirmensaje(QString)));
 }
 
 
@@ -224,9 +223,15 @@ void MainWindow::writeFindOrderXML()
 }
 
 
-void receiveMessage()
+void MainWindow::recibirmensaje(QString message)
 {
-
+    if(message == "done")
+    {
+        ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
+    } else {
+        ui->result_label->setStyleSheet({""});
+    }
+    ui->result_label->setText(message);
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)

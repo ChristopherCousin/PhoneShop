@@ -291,19 +291,22 @@ color: white;
        <widget class="QLabel" name="result_label">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>160</y>
-          <width>251</width>
-          <height>41</height>
+          <x>170</x>
+          <y>164</y>
+          <width>301</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>13</pointsize>
+          <pointsize>19</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
-         <string>l</string>
+         <string/>
         </property>
        </widget>
        <zorder>label_9</zorder>
