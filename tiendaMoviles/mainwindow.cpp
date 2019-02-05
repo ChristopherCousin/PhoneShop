@@ -9,9 +9,7 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer::singleShot(0, this, SLOT(go()));
     loadXML();
     readPhonesXML();
-    ui->tabWidget->tabBar()->setCurrentIndex(0);
-    ui->tabWidget->tabBar()->hide();
-    this->setFixedSize(518,300);
+    startConfig();
 }
 
 MainWindow::~MainWindow()
@@ -26,6 +24,22 @@ void MainWindow::go()
     connect(m_webSocket, SIGNAL(recibirmensaje(QString)), this, SLOT(recibirmensaje(QString)));
 }
 
+void MainWindow::startConfig()
+{
+    ui->actionLogin->setVisible(true);
+    ui->actionLog_out->setVisible(false);
+    ui->label_client1->setVisible(false);
+    ui->label_client2->setVisible(false);
+    ui->label_client3->setVisible(false);
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
+    ui->tabWidget->tabBar()->hide();
+    ordersSizeWindow.setHeight(305);
+    ordersSizeWindow.setWidth(518);
+    ordersSizeLabel.setHeight(81);
+    ordersSizeLabel.setWidth(471);
+    this->setFixedSize(ordersSizeWindow);
+    ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
+}
 
 void MainWindow::loadXML()
 {
@@ -225,16 +239,112 @@ void MainWindow::writeFindOrderXML()
     }
 }
 
+void MainWindow::writeLoginXML()
+{
+
+
+    QDomDocument document;
+    QDomElement root = document.createElement("LoginInfo");
+
+
+    QDomElement login = document.createElement("Login");
+    QDomElement username = document.createElement("Username");
+    QDomElement password = document.createElement("Password");
+
+
+    QString usernamet = ui->lineEdit_username->text();
+    QString passwordt = ui->lineEdit_password->text();
+
+    QDomText usernametxt = document.createTextNode(usernamet);
+    QDomText passwordtxt = document.createTextNode(passwordt);
+
+
+    username.appendChild(usernametxt);
+    password.appendChild(passwordtxt);
+    login.appendChild(username);
+    login.appendChild(password);
+    root.appendChild(login);
+    document.appendChild(root);
+
+    QString message = "login" + document.toString();
+    m_webSocket->sendXML(message);
+
+    // escribimos en el file
+    QFile file("Login.xml");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writting";
+    }
+    else
+    {
+        QTextStream stream(&file);
+        stream << document.toString();
+
+
+        file.close();
+    }
+}
+
 
 void MainWindow::recibirmensaje(QString message)
 {
-    if(message == "done")
+    int toCute = message.mid(0,1).toInt();
+    message.remove(0,1);
+    if(message.mid(0,toCute) == "findOrder")
     {
-        ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
-    } else {
-        ui->result_label->setStyleSheet({""});
+        message.remove(0,toCute);
+        if(message == "done")
+        {
+            ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
+        } else {
+            ui->result_label->setStyleSheet({""});
+        }
+            ui->result_label->setText(message);
     }
-    ui->result_label->setText(message);
+    else if(message.mid(0,toCute) == "login")
+    {
+        message.remove(0,toCute);
+        if(message == "No")
+        {
+            QMessageBox::information(
+                    this,
+                    tr("Error"),
+                    tr("Authentication failed") );
+        } else {
+            username = message;
+            onLoginSuccessfully();
+        }
+    }
+
+}
+
+void MainWindow::onLoginSuccessfully()
+{
+    ui->actionLog_out->setVisible(true);
+    ui->actionLogin->setVisible(false);
+    int x = username.length();
+    int privilege = username.mid(x-1,x).toInt();
+    username.remove(x-1,x);
+
+    if(privilege >= 0)
+    {
+        ordersSizeWindow.setHeight(461);
+        ordersSizeWindow.setWidth(518);
+        ordersSizeLabel.setHeight(201);
+        ui->label_client1->setVisible(true);
+        ui->label_client2->setVisible(true);
+        ui->label_client3->setVisible(true);
+        ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
+    }
+
+    ui->tabWidget->setCurrentIndex(0);
+
+}
+
+void MainWindow::onLogOutSuccessfully()
+{
+    startConfig();
+
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
@@ -271,10 +381,20 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     switch(index)
     {
     case 0:
-        this->setFixedSize(518,300);
+        this->setFixedSize(ordersSizeWindow);
         break;
     case 1:
         this->setFixedSize(518,345);
         break;
     }
+}
+
+void MainWindow::on_btn_login_clicked()
+{
+    writeLoginXML();
+}
+
+void MainWindow::on_actionLog_out_triggered()
+{
+    onLogOutSuccessfully();
 }

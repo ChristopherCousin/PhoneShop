@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>518</width>
-    <height>345</height>
+    <height>461</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -123,13 +123,13 @@ color: white;
          <string>Find Order</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_9">
+       <widget class="QLabel" name="statusOfOrderLabel">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>140</y>
           <width>471</width>
-          <height>81</height>
+          <height>201</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -200,7 +200,61 @@ color: white;
          <string/>
         </property>
        </widget>
-       <zorder>label_9</zorder>
+       <widget class="QLabel" name="label_client1">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>210</y>
+          <width>141</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Client Name:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_client2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>250</y>
+          <width>141</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Price:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_client3">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>290</y>
+          <width>141</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Repair Name:</string>
+        </property>
+       </widget>
+       <zorder>statusOfOrderLabel</zorder>
        <zorder>label_7</zorder>
        <zorder>label_6</zorder>
        <zorder>lineEdit_2</zorder>
@@ -209,12 +263,15 @@ color: white;
        <zorder>label_10</zorder>
        <zorder>label_12</zorder>
        <zorder>result_label</zorder>
+       <zorder>label_client1</zorder>
+       <zorder>label_client2</zorder>
+       <zorder>label_client3</zorder>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Login</string>
        </attribute>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="lineEdit_username">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -224,7 +281,7 @@ color: white;
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_3">
+       <widget class="QLineEdit" name="lineEdit_password">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -233,8 +290,11 @@ color: white;
           <height>32</height>
          </rect>
         </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
        </widget>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="btn_login">
         <property name="geometry">
          <rect>
           <x>200</x>
@@ -366,9 +426,9 @@ border-radius: 15px;
         </property>
        </widget>
        <zorder>label_11</zorder>
-       <zorder>lineEdit</zorder>
-       <zorder>lineEdit_3</zorder>
-       <zorder>pushButton</zorder>
+       <zorder>lineEdit_username</zorder>
+       <zorder>lineEdit_password</zorder>
+       <zorder>btn_login</zorder>
        <zorder>pushButton_2</zorder>
        <zorder>pushButton_3</zorder>
        <zorder>pushButton_4</zorder>
@@ -523,17 +583,17 @@ color: white;
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionLogin">
    <property name="text">
-    <string>Login</string>
+    <string>&amp;Login</string>
    </property>
   </action>
   <action name="actionLog_out">
    <property name="text">
-    <string>Log out</string>
+    <string>Log &amp;out</string>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>Exit</string>
+    <string>&amp;Exit</string>
    </property>
   </action>
  </widget>

@@ -73,6 +73,19 @@ CREATE TABLE public.orders (
 ALTER TABLE public.orders OWNER TO usuario;
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: usuario
+--
+
+CREATE TABLE public.users (
+    iduser character varying NOT NULL,
+    passworduser character varying NOT NULL,
+    privilegesuser character varying
+);
+
+
+ALTER TABLE public.users OWNER TO usuario;
+
+--
 -- Data for Name: availablephones; Type: TABLE DATA; Schema: public; Owner: usuario
 --
 
@@ -103,7 +116,26 @@ Iphone	Pantalla	200
 COPY public.orders (statusorders, phoneorders, repairorders, orderidorders, dateorders) FROM stdin;
 done	Iphone	Pantalla	78c626fb-59d8-45fd-91ff-6ea40521bf1d	2019-01-30 20:45:32.740508+01
 done	Iphone 6	asd	531e59b7-eda6-4f0d-a930-3015866f1265	2019-01-30 20:59:02.799716+01
+done	Android	100	f699cf29-bb15-4d88-afd1-3ca7a0ec97a6	2019-01-31 12:38:18.889955+01
+done	Iphone	Pantalla	1cccdb1d-1d29-435a-8e4a-4061230488b2	2019-01-31 13:57:51.863999+01
 \.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: usuario
+--
+
+COPY public.users (iduser, passworduser, privilegesuser) FROM stdin;
+admin	admin	3
+\.
+
+
+--
+-- Name: users users_iduser_key; Type: CONSTRAINT; Schema: public; Owner: usuario
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_iduser_key UNIQUE (iduser);
 
 
 --

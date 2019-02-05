@@ -9,6 +9,7 @@
 #include <QUuid>
 #include <QRect>
 #include <QDesktopWidget>
+#include <QMessageBox>
 #include "websocket.h"
 
 
@@ -28,11 +29,16 @@ public:
     void readRepairsXML();
     void writeOrderXML();
     void writeFindOrderXML();
+    void writeLoginXML();
+    void onLoginSuccessfully();
+    void onLogOutSuccessfully();
+    void startConfig();
 
     void receiveMessage();
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
     QDomDocument xmlRepairs;
+    QString username;
 
 
 private slots:
@@ -51,9 +57,16 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_btn_login_clicked();
+
+    void on_actionLog_out_triggered();
+
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket;
+    QSize ordersSizeWindow;
+    QSize ordersSizeLabel;
+
 };
 
 #endif // MAINWINDOW_H

@@ -30,8 +30,10 @@ public:
     ~TestServer();
     void newOrder();
     QString findOrder();
+    QString checkLogin();
     QDomDocument newOrderXML;
     QDomDocument findOrderXML;
+    QDomDocument LoginXML;
     QSqlDatabase db;
     void connectDatabase();
     bool validatexml(QString xml, QString xsd);

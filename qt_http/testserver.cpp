@@ -99,7 +99,28 @@ void TestServer::processTextMessage(QString message)
         if (validatexml("findOrder.xml", "findOrder.xsd"))
         {
             respuesta = findOrder();
-            pClient->sendTextMessage(respuesta);
+            pClient->sendTextMessage("9findOrder" + respuesta);
+        }
+    }
+    else if (message.mid(0, 5) == "login")
+    {
+        message.remove(0, 5);
+        QFile file("Login.xml");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&file);
+            stream << message;
+            file.close();
+        }
+        LoginXML.setContent(&file);
+        if (validatexml("Login.xml", "Login.xsd"))
+        {
+            respuesta = checkLogin();
+            pClient->sendTextMessage("5login" +respuesta);
         }
     }
 
@@ -177,6 +198,50 @@ QString TestServer::findOrder()
             result = "This order does not exist";
         } else {
             result = query.value(0).toString();
+        }
+    }
+
+       return result;
+}
+
+QString TestServer::checkLogin()
+{
+    QDomElement root = LoginXML.documentElement();
+    QDomElement Component = root.firstChild().toElement();
+    QString username;
+    QString password;
+    QString result{""};
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "Login")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+            while (!Child.isNull())
+            {
+                if (Child.tagName() == "Username")
+                    username = Child.firstChild().toText().data();
+                if (Child.tagName() == "Password")
+                    password = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+        Component = Component.nextSibling().toElement();
+
+
+        QSqlQuery query(
+            "SELECT * FROM users WHERE iduser ='" + username + "' AND passworduser = '" + password + "'", db);
+        query.next();
+        if(query.lastError().isValid())
+        {
+            result = "Error";
+        }
+        else if(query.numRowsAffected() == 0)
+        {
+            result = "No";
+        } else {
+            result = query.value(0).toString() + query.value(2).toString();
         }
     }
 
