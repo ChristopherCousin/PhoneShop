@@ -16,7 +16,6 @@ Websocket::Websocket(QUrl uri, QObject *parent) :
 void Websocket::onConnected()
 {
     qDebug() << "WebSocket connected";
-
 }
 
 void Websocket::sendXML(QString xml)

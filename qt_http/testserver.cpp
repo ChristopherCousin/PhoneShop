@@ -135,7 +135,7 @@ void TestServer::newOrder()
 
         QSqlQuery query("INSERT INTO "
                         "orders(statusorders,phoneorders,repairorders,"
-                        "orderidorders,dateorders) values('in process','"
+                        "orderidorders,dateorders) values('On the way of the technician','"
                 + phone + "', '" + repair + "', '" + idorder + "',current_timestamp);",
             db);
 
