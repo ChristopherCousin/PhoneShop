@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <iostream>
 #include <QUuid>
+#include <QRect>
+#include <QDesktopWidget>
 #include "websocket.h"
 
 
@@ -42,6 +44,12 @@ private slots:
     void on_btn_newRepair_clicked();
 
     void on_btn_findOrder_clicked();
+
+    void on_actionLogin_triggered();
+
+    void on_pushButton_2_clicked();
+
+    void on_tabWidget_currentChanged(int index);
 
 private:
     Ui::MainWindow *ui;

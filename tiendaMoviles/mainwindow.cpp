@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer::singleShot(0, this, SLOT(go()));
     loadXML();
     readPhonesXML();
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
+    ui->tabWidget->tabBar()->hide();
+    this->setFixedSize(518,300);
 }
 
 MainWindow::~MainWindow()
@@ -251,4 +254,27 @@ void MainWindow::on_btn_findOrder_clicked()
     writeFindOrderXML();
     //ui->result_label->setText(Websocket::statusMessage);
 
+}
+
+void MainWindow::on_actionLogin_triggered()
+{
+    ui->tabWidget->tabBar()->setCurrentIndex(1);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    ui->tabWidget->tabBar()->setCurrentIndex(0);
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    switch(index)
+    {
+    case 0:
+        this->setFixedSize(518,300);
+        break;
+    case 1:
+        this->setFixedSize(518,345);
+        break;
+    }
 }
