@@ -33,8 +33,9 @@ public:
     void onLoginSuccessfully();
     void onLogOutSuccessfully();
     void startConfig();
-
     void receiveMessage();
+
+
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
     QDomDocument xmlRepairs;

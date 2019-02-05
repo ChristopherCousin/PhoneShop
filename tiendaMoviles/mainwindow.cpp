@@ -127,6 +127,7 @@ void MainWindow::readRepairsXML()
 
             QString name;
             QString repair;
+            QString price;
             while (!Child.isNull())
             {
 
@@ -335,6 +336,11 @@ void MainWindow::onLoginSuccessfully()
         ui->label_client2->setVisible(true);
         ui->label_client3->setVisible(true);
         ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
+    }
+
+    if(privilege >= 2)
+    {
+        ui->tabWidget->tabBar()->show();
     }
 
     ui->tabWidget->setCurrentIndex(0);
