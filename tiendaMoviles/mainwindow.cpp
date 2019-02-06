@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget* parent)
     loadXML();
     readPhonesXML();
     startConfig();
+    ui->tabWidget->tabBar()->hide();
 }
 
 MainWindow::~MainWindow()
@@ -32,7 +33,6 @@ void MainWindow::startConfig()
     ui->label_client2->setVisible(false);
     ui->label_client3->setVisible(false);
     ui->tabWidget->tabBar()->setCurrentIndex(0);
-    ui->tabWidget->tabBar()->hide();
     ordersSizeWindow.setHeight(305);
     ordersSizeWindow.setWidth(518);
     ordersSizeLabel.setHeight(81);
@@ -127,7 +127,6 @@ void MainWindow::readRepairsXML()
 
             QString name;
             QString repair;
-            QString price;
             while (!Child.isNull())
             {
 
@@ -136,7 +135,6 @@ void MainWindow::readRepairsXML()
                 if (name == ui->comboBox->currentText())
                 {
                     Child = Child.nextSibling().toElement();
-
                     if (Child.tagName() == "Repair")
                     {
                         repair = Child.firstChild().toText().data();
@@ -154,6 +152,7 @@ void MainWindow::readRepairsXML()
 }
 
 void MainWindow::writeOrderXML()
+
 {
 
     QDomDocument document;
@@ -325,10 +324,12 @@ void MainWindow::onLoginSuccessfully()
     ui->actionLogin->setVisible(false);
     int x = username.length();
     int privilege = username.mid(x-1,x).toInt();
+    qDebug() << privilege;
     username.remove(x-1,x);
 
-    if(privilege >= 0)
+    if(privilege >= 1)
     {
+        ui->tabWidget->tabBar()->show();
         ordersSizeWindow.setHeight(461);
         ordersSizeWindow.setWidth(518);
         ordersSizeLabel.setHeight(201);
@@ -337,13 +338,9 @@ void MainWindow::onLoginSuccessfully()
         ui->label_client3->setVisible(true);
         ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
     }
-
-    if(privilege >= 2)
-    {
-        ui->tabWidget->tabBar()->show();
-    }
-
+    ui->tabWidget->tabBar()->show();
     ui->tabWidget->setCurrentIndex(0);
+    ui->tab_3->setEnabled(false);
 
 }
 
@@ -388,9 +385,13 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     {
     case 0:
         this->setFixedSize(ordersSizeWindow);
+        qDebug() << ordersSizeWindow;
         break;
     case 1:
         this->setFixedSize(518,345);
+        break;
+    case 2:
+        this->setFixedSize(555,345);
         break;
     }
 }
@@ -403,4 +404,9 @@ void MainWindow::on_btn_login_clicked()
 void MainWindow::on_actionLog_out_triggered()
 {
     onLogOutSuccessfully();
+}
+
+void MainWindow::on_comboBox_2_currentIndexChanged(const QString &arg1)
+{
+
 }

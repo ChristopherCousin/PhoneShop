@@ -62,6 +62,8 @@ private slots:
 
     void on_actionLog_out_triggered();
 
+    void on_comboBox_2_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     Websocket *m_webSocket;
