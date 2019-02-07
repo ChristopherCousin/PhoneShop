@@ -27,6 +27,7 @@ public:
     void loadXML();
     void readPhonesXML();
     void readRepairsXML();
+    void readFoundedOrderXML();
     void writeOrderXML();
     void writeFindOrderXML();
     void writeLoginXML();
@@ -39,6 +40,7 @@ public:
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
     QDomDocument xmlRepairs;
+    QDomDocument xmlFoundedOrder;
     QString username;
 
 

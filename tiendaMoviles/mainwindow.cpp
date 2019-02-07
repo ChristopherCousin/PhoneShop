@@ -151,6 +151,45 @@ void MainWindow::readRepairsXML()
     }
 }
 
+void MainWindow::readFoundedOrderXML()
+{
+    QDomElement root = xmlFoundedOrder.documentElement();
+
+    QDomElement Component = root.firstChild().toElement();
+
+    QString status;
+
+
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "OrderStatus")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+
+            while (!Child.isNull())
+            {
+                qDebug() << status;
+                if (Child.tagName() == "Status")
+                    status = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+
+        }
+        Component = Component.nextSibling().toElement();
+    }
+
+    if(status == "done")
+    {
+        ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
+    } else {
+        status = "Order not found";
+        ui->result_label->setStyleSheet({""});
+    }
+        ui->result_label->setText(status);
+}
+
 void MainWindow::writeOrderXML()
 
 {
@@ -293,13 +332,10 @@ void MainWindow::recibirmensaje(QString message)
     if(message.mid(0,toCute) == "findOrder")
     {
         message.remove(0,toCute);
-        if(message == "done")
-        {
-            ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
-        } else {
-            ui->result_label->setStyleSheet({""});
-        }
-            ui->result_label->setText(message);
+
+        xmlFoundedOrder.setContent(message);
+        readFoundedOrderXML();
+
     }
     else if(message.mid(0,toCute) == "login")
     {

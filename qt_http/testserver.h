@@ -15,6 +15,8 @@
 #include <QXmlSchema>
 #include <QCoreApplication>
 #include <QUuid>
+#include <tuple>
+#include "xmlmanager.h"
 
 
 class QWebSocketServer;
@@ -54,6 +56,7 @@ private slots:
 private:
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket *> m_clients;
+    Xmlmanager xmlManager;
 };
 
 #endif

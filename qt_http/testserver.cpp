@@ -18,6 +18,10 @@ TestServer::TestServer(quint16 port)
 
     connectDatabase();
 
+    /*auto tie = xmlManager.writeXML();
+    qDebug() << std::get<0>(tie);
+    qDebug() << std::get<1>(tie);*/
+
 }
 
 
@@ -98,7 +102,8 @@ void TestServer::processTextMessage(QString message)
         findOrderXML.setContent(&file);
         if (validatexml("findOrder.xml", "findOrder.xsd"))
         {
-            respuesta = findOrder();
+            respuesta = xmlManager.writeOrderStatusXml(findOrder());
+
             pClient->sendTextMessage("9findOrder" + respuesta);
         }
     }

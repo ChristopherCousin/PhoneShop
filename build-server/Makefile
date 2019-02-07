@@ -51,9 +51,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../qt_http/main.cpp \
-		../qt_http/testserver.cpp moc_testserver.cpp
+		../qt_http/testserver.cpp \
+		../qt_http/xmlmanager.cpp moc_testserver.cpp
 OBJECTS       = main.o \
 		testserver.o \
+		xmlmanager.o \
 		moc_testserver.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -155,6 +157,7 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		../qt_http/.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -172,8 +175,10 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib64/qt5/mkspecs/features/yacc.prf \
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
-		../qt_http/qt_http.pro ../qt_http/testserver.h ../qt_http/main.cpp \
-		../qt_http/testserver.cpp
+		../qt_http/qt_http.pro ../qt_http/testserver.h \
+		../qt_http/xmlmanager.h ../qt_http/main.cpp \
+		../qt_http/testserver.cpp \
+		../qt_http/xmlmanager.cpp
 QMAKE_TARGET  = qt_http
 DESTDIR       = 
 TARGET        = qt_http
@@ -285,6 +290,7 @@ Makefile: ../qt_http/qt_http.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /us
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -410,6 +416,7 @@ Makefile: ../qt_http/qt_http.pro /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf /us
 /usr/lib64/qt5/mkspecs/features/qt_config.prf:
 /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib64/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib64/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib64/qt5/mkspecs/features/toolchain.prf:
 /usr/lib64/qt5/mkspecs/features/default_pre.prf:
@@ -449,8 +456,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_http/testserver.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_http/main.cpp ../qt_http/testserver.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_http/testserver.h ../qt_http/xmlmanager.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_http/main.cpp ../qt_http/testserver.cpp ../qt_http/xmlmanager.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -507,6 +514,9 @@ main.o: ../qt_http/main.cpp ../qt_http/testserver.h
 
 testserver.o: ../qt_http/testserver.cpp ../qt_http/testserver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testserver.o ../qt_http/testserver.cpp
+
+xmlmanager.o: ../qt_http/xmlmanager.cpp ../qt_http/xmlmanager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o xmlmanager.o ../qt_http/xmlmanager.cpp
 
 moc_testserver.o: moc_testserver.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_testserver.o moc_testserver.cpp
