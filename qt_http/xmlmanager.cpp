@@ -15,16 +15,38 @@ std::tuple<QString,QString> Xmlmanager::writeXML()
 QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
 {
     QDomDocument document;
-    QDomElement root = document.createElement("OrderStatus");
+    QDomElement root = document.createElement("FoundedOrder");
 
 
+    QDomElement order = document.createElement("Order");
     QDomElement status = document.createElement("Status");
 
     QDomText statustxt = document.createTextNode(orderStatus);
 
 
     status.appendChild(statustxt);
-    root.appendChild(status);
+    order.appendChild(status);
+    root.appendChild(order);
+    document.appendChild(root);
+
+    QString message = document.toString();
+    return message;
+}
+
+QString Xmlmanager::writeLoginXml(QString logininfo)
+{
+    QDomDocument document;
+    QDomElement root = document.createElement("LoginInfo");
+
+
+    QDomElement login = document.createElement("Login");
+    QDomElement user = document.createElement("Username");
+
+    QDomText logintxt = document.createTextNode(logininfo);
+
+    user.appendChild(logintxt);
+    login.appendChild(user);
+    root.appendChild(login);
     document.appendChild(root);
 
     QString message = document.toString();

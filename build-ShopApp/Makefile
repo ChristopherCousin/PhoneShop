@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_WEBSOCKETS_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XMLPATTERNS_LIB -DQT_WEBSOCKETS_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../tiendaMoviles -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtWidgets -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtXml -isystem /usr/include/qt5/QtWebSockets -isystem /usr/include/qt5/QtNetwork -isystem /usr/include/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib64/qt5/mkspecs/linux-g++
+INCPATH       = -I../tiendaMoviles -I. -isystem /usr/include/qt5 -isystem /usr/include/qt5/QtWidgets -isystem /usr/include/qt5/QtGui -isystem /usr/include/qt5/QtXmlPatterns -isystem /usr/include/qt5/QtWebSockets -isystem /usr/include/qt5/QtNetwork -isystem /usr/include/qt5/QtXml -isystem /usr/include/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib64/qt5/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake-qt5
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = tiendaMoviles1.0.0
 DISTDIR = /home/chris/servicio-tenico/PhoneShop/build-ShopApp/.tmp/tiendaMoviles1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Xml -lQt5WebSockets -lQt5Network -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5XmlPatterns -lQt5WebSockets -lQt5Network -lQt5Xml -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -161,6 +161,7 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		../tiendaMoviles/.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -295,6 +296,7 @@ Makefile: ../tiendaMoviles/tiendaMoviles.pro /usr/lib64/qt5/mkspecs/linux-g++/qm
 		/usr/lib64/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib64/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib64/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib64/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib64/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib64/qt5/mkspecs/features/default_pre.prf \
@@ -318,9 +320,10 @@ Makefile: ../tiendaMoviles/tiendaMoviles.pro /usr/lib64/qt5/mkspecs/linux-g++/qm
 		../tiendaMoviles/resources.qrc \
 		/usr/lib64/libQt5Widgets.prl \
 		/usr/lib64/libQt5Gui.prl \
-		/usr/lib64/libQt5Xml.prl \
+		/usr/lib64/libQt5XmlPatterns.prl \
 		/usr/lib64/libQt5WebSockets.prl \
 		/usr/lib64/libQt5Network.prl \
+		/usr/lib64/libQt5Xml.prl \
 		/usr/lib64/libQt5Core.prl
 	$(QMAKE) -o Makefile ../tiendaMoviles/tiendaMoviles.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /usr/lib64/qt5/mkspecs/features/spec_pre.prf:
@@ -423,6 +426,7 @@ Makefile: ../tiendaMoviles/tiendaMoviles.pro /usr/lib64/qt5/mkspecs/linux-g++/qm
 /usr/lib64/qt5/mkspecs/features/qt_config.prf:
 /usr/lib64/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib64/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib64/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib64/qt5/mkspecs/features/toolchain.prf:
 /usr/lib64/qt5/mkspecs/features/default_pre.prf:
@@ -446,9 +450,10 @@ Makefile: ../tiendaMoviles/tiendaMoviles.pro /usr/lib64/qt5/mkspecs/linux-g++/qm
 ../tiendaMoviles/resources.qrc:
 /usr/lib64/libQt5Widgets.prl:
 /usr/lib64/libQt5Gui.prl:
-/usr/lib64/libQt5Xml.prl:
+/usr/lib64/libQt5XmlPatterns.prl:
 /usr/lib64/libQt5WebSockets.prl:
 /usr/lib64/libQt5Network.prl:
+/usr/lib64/libQt5Xml.prl:
 /usr/lib64/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../tiendaMoviles/tiendaMoviles.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -516,12 +521,12 @@ moc_mainwindow.cpp: ../tiendaMoviles/websocket.h \
 		../tiendaMoviles/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/servicio-tenico/PhoneShop/tiendaMoviles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../tiendaMoviles/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/servicio-tenico/PhoneShop/tiendaMoviles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../tiendaMoviles/mainwindow.h -o moc_mainwindow.cpp
 
 moc_websocket.cpp: ../tiendaMoviles/websocket.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
-	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/servicio-tenico/PhoneShop/tiendaMoviles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../tiendaMoviles/websocket.h -o moc_websocket.cpp
+	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/servicio-tenico/PhoneShop/tiendaMoviles -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../tiendaMoviles/websocket.h -o moc_websocket.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:

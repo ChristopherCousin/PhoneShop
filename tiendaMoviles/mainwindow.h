@@ -10,6 +10,9 @@
 #include <QRect>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QtXmlPatterns/QXmlSchema>
+#include <QtXmlPatterns/QXmlSchemaValidator>
+#include <QXmlSchema>
 #include "websocket.h"
 
 
@@ -28,6 +31,7 @@ public:
     void readPhonesXML();
     void readRepairsXML();
     void readFoundedOrderXML();
+    void readLoginXML();
     void writeOrderXML();
     void writeFindOrderXML();
     void writeLoginXML();
@@ -35,12 +39,14 @@ public:
     void onLogOutSuccessfully();
     void startConfig();
     void receiveMessage();
+    bool validatexml(QString xml, QString xsd);
 
 
     // el qdomdocumento representara un documento xml
     QDomDocument xmlBOM;
     QDomDocument xmlRepairs;
     QDomDocument xmlFoundedOrder;
+    QDomDocument xmlLogin;
     QString username;
 
 

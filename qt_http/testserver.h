@@ -1,6 +1,8 @@
 #ifndef TESTSERVER_H
 #define TESTSERVER_H
 
+#include <QtCore/QDebug>
+#include <QSqlError>
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
@@ -17,6 +19,8 @@
 #include <QUuid>
 #include <tuple>
 #include "xmlmanager.h"
+#include "QtWebSockets/qwebsocketserver.h"
+#include "QtWebSockets/qwebsocket.h"
 
 
 class QWebSocketServer;

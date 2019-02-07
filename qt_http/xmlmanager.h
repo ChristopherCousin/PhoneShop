@@ -15,6 +15,7 @@ public:
     Xmlmanager();
     std::tuple<QString,QString> writeXML();
     QString writeOrderStatusXml(QString orderStatus);
+    QString writeLoginXml(QString orderStatus);
 };
 
 #endif // XMLMANAGER_H

@@ -1,8 +1,5 @@
 #include "testserver.h"
-#include "QtWebSockets/qwebsocketserver.h"
-#include "QtWebSockets/qwebsocket.h"
-#include <QtCore/QDebug>
-#include <QSqlError>
+
 
 TestServer::TestServer(quint16 port)
     : m_pWebSocketServer(new QWebSocketServer(
@@ -105,6 +102,7 @@ void TestServer::processTextMessage(QString message)
             respuesta = xmlManager.writeOrderStatusXml(findOrder());
 
             pClient->sendTextMessage("9findOrder" + respuesta);
+
         }
     }
     else if (message.mid(0, 5) == "login")
@@ -246,7 +244,7 @@ QString TestServer::checkLogin()
         {
             result = "No";
         } else {
-            result = query.value(0).toString() + query.value(2).toString();
+           result = xmlManager.writeLoginXml(query.value(0).toString());
         }
     }
 

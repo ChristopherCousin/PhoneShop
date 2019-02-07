@@ -492,7 +492,8 @@ moc_predefs.h: /usr/lib64/qt5/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_testserver.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_testserver.cpp
-moc_testserver.cpp: ../qt_http/testserver.h \
+moc_testserver.cpp: ../qt_http/xmlmanager.h \
+		../qt_http/testserver.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
 	/usr/lib64/qt5/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib64/qt5/mkspecs/linux-g++ -I/home/chris/servicio-tenico/PhoneShop/qt_http -I/home/chris/servicio-tenico/PhoneShop/qt_http -I/usr/include/qt5 -I/usr/include/qt5/QtWebSockets -I/usr/include/qt5/QtXmlPatterns -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtXml -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtCore -I. -I/usr/include/c++/7 -I/usr/include/c++/7/x86_64-suse-linux -I/usr/include/c++/7/backward -I/usr/lib64/gcc/x86_64-suse-linux/7/include -I/usr/local/include -I/usr/lib64/gcc/x86_64-suse-linux/7/include-fixed -I/usr/x86_64-suse-linux/include -I/usr/include ../qt_http/testserver.h -o moc_testserver.cpp
@@ -509,10 +510,12 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-main.o: ../qt_http/main.cpp ../qt_http/testserver.h
+main.o: ../qt_http/main.cpp ../qt_http/testserver.h \
+		../qt_http/xmlmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../qt_http/main.cpp
 
-testserver.o: ../qt_http/testserver.cpp ../qt_http/testserver.h
+testserver.o: ../qt_http/testserver.cpp ../qt_http/testserver.h \
+		../qt_http/xmlmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testserver.o ../qt_http/testserver.cpp
 
 xmlmanager.o: ../qt_http/xmlmanager.cpp ../qt_http/xmlmanager.h

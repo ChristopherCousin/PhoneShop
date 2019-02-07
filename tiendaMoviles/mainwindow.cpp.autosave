@@ -528,5 +528,5 @@ void MainWindow::on_actionLog_out_triggered()
 
 void MainWindow::on_comboBox_2_currentIndexChanged(const QString &arg1)
 {
-
+    
 }
