@@ -8,14 +8,22 @@
 #include <string>
 #include <stdexcept>
 #include <QtXml>
+#include <QFile>
+#include <QXmlStreamReader>
 
 class Xmlmanager
 {
 public:
     Xmlmanager();
-    std::tuple<QString,QString> writeXML();
+    std::tuple<QString,QString, QString> readNewOrder();
     QString writeOrderStatusXml(QString orderStatus);
     QString writeLoginXml(QString orderStatus);
+    void loadXmls();
+
+private:
+    QDomDocument newOrderXML;
+    QDomDocument findOrderXML;
+    QDomDocument LoginXML;
 };
 
 #endif // XMLMANAGER_H

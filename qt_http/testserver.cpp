@@ -15,10 +15,6 @@ TestServer::TestServer(quint16 port)
 
     connectDatabase();
 
-    /*auto tie = xmlManager.writeXML();
-    qDebug() << std::get<0>(tie);
-    qDebug() << std::get<1>(tie);*/
-
 }
 
 
@@ -131,45 +127,21 @@ void TestServer::processTextMessage(QString message)
 
 void TestServer::newOrder()
 {
-    QDomElement root = newOrderXML.documentElement();
-    QDomElement Component = root.firstChild().toElement();
-    QString idorder;
-    QString repair;
-    QString phone;
-    while (!Component.isNull())
-    {
-        if (Component.tagName() == "Order")
-        {
-            QDomElement Child = Component.firstChild().toElement();
 
-            while (!Child.isNull())
-            {
-                if (Child.tagName() == "IdOrder")
-                    idorder = Child.firstChild().toText().data();
-                if (Child.tagName() == "repair")
-                    repair = Child.firstChild().toText().data();
-                if (Child.tagName() == "Phone")
-                    phone = Child.firstChild().toText().data();
-
-                Child = Child.nextSibling().toElement();
-            }
-        }
-        Component = Component.nextSibling().toElement();
-
-
+        xmlManager.loadXmls();
+        auto newOrderXml = xmlManager.readNewOrder();
         QSqlQuery query("INSERT INTO "
                         "orders(statusorders,phoneorders,repairorders,"
                         "orderidorders,dateorders) values('On the way of the technician','"
-                + phone + "', '" + repair + "', '" + idorder + "',current_timestamp);",
+                + std::get<0>(newOrderXml) + "', '" + std::get<1>(newOrderXml) + "', '" + std::get<2>(newOrderXml) + "',current_timestamp);",
             db);
-
 
         if(!query.lastError().isValid())
         {
-            qDebug() << "There was an error in the database";
+            qDebug() << "Error en consulta: " << query.lastError();
         }
     }
-}
+
 
 QString TestServer::findOrder()
 {

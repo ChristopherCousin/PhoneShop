@@ -317,7 +317,7 @@ void MainWindow::writeOrderXML()
 
     QString message = "order" + document.toString();
     m_webSocket->sendXML(message);
-
+    qDebug() << message;
     // escribimos en el file
     QFile file("newOrder.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -474,6 +474,9 @@ void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
 {
     ui->comboBox_2->clear();
     readRepairsXML();
+    if(ui->comboBox_2->currentText() == ""){
+
+    }
 }
 
 

@@ -6,11 +6,20 @@ Xmlmanager::Xmlmanager()
 }
 
 
-std::tuple<QString,QString> Xmlmanager::writeXML()
+void Xmlmanager::loadXmls()
 {
-   return std::make_tuple("Lisa Simpson","sda");
-}
+    QFile f("newOrder.xml");
+    if (!f.open(QIODevice::ReadOnly))
+    {
+        // Error
+        std::cerr << "Error while loading file" << std::endl;
+    }
 
+    newOrderXML.setContent(&f);
+
+    f.close();
+
+}
 
 QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
 {
@@ -51,4 +60,35 @@ QString Xmlmanager::writeLoginXml(QString logininfo)
 
     QString message = document.toString();
     return message;
+}
+
+std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
+{
+    QDomElement root = newOrderXML.documentElement();
+    QDomElement Component = root.firstChild().toElement();
+    QString idorder;
+    QString repair;
+    QString phone;
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "Order")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+            while (!Child.isNull())
+            {
+                if (Child.tagName() == "IdOrder")
+                    idorder = Child.firstChild().toText().data();
+                if (Child.tagName() == "repair")
+                    repair = Child.firstChild().toText().data();
+                if (Child.tagName() == "Phone")
+                    phone = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+        Component = Component.nextSibling().toElement();
+    }
+    qDebug() << phone <<repair <<idorder;
+    return std::make_tuple(phone,repair,idorder);
 }
