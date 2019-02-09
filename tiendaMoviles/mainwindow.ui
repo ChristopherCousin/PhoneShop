@@ -30,7 +30,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="enabled">
@@ -182,7 +182,7 @@ color: white;
        <widget class="QLabel" name="result_label">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>160</x>
           <y>164</y>
           <width>301</width>
           <height>31</height>
@@ -190,7 +190,7 @@ color: white;
         </property>
         <property name="font">
          <font>
-          <pointsize>19</pointsize>
+          <pointsize>15</pointsize>
          </font>
         </property>
         <property name="styleSheet">

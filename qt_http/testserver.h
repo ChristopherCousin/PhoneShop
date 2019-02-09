@@ -6,15 +6,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QByteArray>
-#include <QFile>
-#include <QXmlStreamReader>
 #include <iostream>
-#include <QDomDocument>
 #include <QSqlQuery>
 #include <QSql>
-#include <QtXmlPatterns/QXmlSchema>
-#include <QtXmlPatterns/QXmlSchemaValidator>
-#include <QXmlSchema>
 #include <QCoreApplication>
 #include <QUuid>
 #include <tuple>
@@ -37,12 +31,8 @@ public:
     void newOrder();
     QString findOrder();
     QString checkLogin();
-    QDomDocument newOrderXML;
-    QDomDocument findOrderXML;
-    QDomDocument LoginXML;
     QSqlDatabase db;
     void connectDatabase();
-    bool validatexml(QString xml, QString xsd);
     void checkProcessOrders();
     void checkQueueOrders();
     void sendXML(QString xml);

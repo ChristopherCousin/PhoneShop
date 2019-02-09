@@ -148,9 +148,9 @@ public:
         label_12->setFont(font);
         result_label = new QLabel(tab);
         result_label->setObjectName(QStringLiteral("result_label"));
-        result_label->setGeometry(QRect(170, 164, 301, 31));
+        result_label->setGeometry(QRect(160, 164, 301, 31));
         QFont font1;
-        font1.setPointSize(19);
+        font1.setPointSize(15);
         result_label->setFont(font1);
         result_label->setStyleSheet(QStringLiteral(""));
         label_client1 = new QLabel(tab);
@@ -315,7 +315,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

@@ -197,7 +197,6 @@ void MainWindow::readFoundedOrderXML()
         {
             ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
         } else {
-            status = "Order not found";
             ui->result_label->setStyleSheet({""});
         }
             ui->result_label->setText(status);

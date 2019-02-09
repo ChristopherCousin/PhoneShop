@@ -6,18 +6,88 @@ Xmlmanager::Xmlmanager()
 }
 
 
+
+void Xmlmanager::makeFiles(QString fileName, QString message)
+{
+    if(fileName == "order")
+    {
+        QFile newOrderFile("newOrder.xml");
+        if (!newOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&newOrderFile);
+            stream << message;
+            newOrderFile.close();
+        }
+        newOrderXML.setContent(&newOrderFile);
+    }
+    if(fileName == "find")
+    {
+        QFile findOrderFile("findOrder.xml");
+        if (!findOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&findOrderFile);
+            stream << message;
+            findOrderFile.close();
+        }
+        findOrderXML.setContent(&findOrderFile);
+    }
+    if(fileName == "login")
+    {
+        QFile LoginFile("Login.xml");
+        if (!LoginFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&LoginFile);
+            stream << message;
+            LoginFile.close();
+        }
+        LoginXML.setContent(&LoginFile);
+    }
+}
+
 void Xmlmanager::loadXmls()
 {
-    QFile f("newOrder.xml");
-    if (!f.open(QIODevice::ReadOnly))
+    QFile newOrderFile("newOrder.xml");
+    if (!newOrderFile.open(QIODevice::ReadOnly))
     {
         // Error
         std::cerr << "Error while loading file" << std::endl;
     }
 
-    newOrderXML.setContent(&f);
+    newOrderXML.setContent(&newOrderFile);
+    newOrderFile.close();
 
-    f.close();
+
+    QFile findOrderFile("findOrder.xml");
+    if (!findOrderFile.open(QIODevice::ReadOnly))
+    {
+        // Error
+        std::cerr << "Error while loading file" << std::endl;
+    }
+    findOrderXML.setContent(&findOrderFile);
+    findOrderFile.close();
+
+
+    QFile LoginFile("Login.xml");
+    if (!LoginFile.open(QIODevice::ReadOnly))
+    {
+        // Error
+        std::cerr << "Error while loading file" << std::endl;
+    }
+
+    LoginXML.setContent(&LoginFile);
+    LoginFile.close();
 
 }
 
@@ -64,6 +134,7 @@ QString Xmlmanager::writeLoginXml(QString logininfo)
 
 std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
 {
+    loadXmls();
     QDomElement root = newOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder;
@@ -89,6 +160,91 @@ std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
         }
         Component = Component.nextSibling().toElement();
     }
-    qDebug() << phone <<repair <<idorder;
     return std::make_tuple(phone,repair,idorder);
+}
+
+QString Xmlmanager::readFindOrder()
+{
+    loadXmls();
+    QDomElement root = findOrderXML.documentElement();
+    QDomElement Component = root.firstChild().toElement();
+    QString idorder{""};
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "Order")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+            while (!Child.isNull())
+            {
+                if (Child.tagName() == "IdOrder")
+                    idorder = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+        Component = Component.nextSibling().toElement();
+
+    }
+
+       return idorder;
+}
+
+std::tuple<QString, QString> Xmlmanager::readLogin()
+{
+    loadXmls();
+    QDomElement root = LoginXML.documentElement();
+    QDomElement Component = root.firstChild().toElement();
+    QString username;
+    QString password;
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "Login")
+        {
+            QDomElement Child = Component.firstChild().toElement();
+
+            while (!Child.isNull())
+            {
+                if (Child.tagName() == "Username")
+                    username = Child.firstChild().toText().data();
+                if (Child.tagName() == "Password")
+                    password = Child.firstChild().toText().data();
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+        Component = Component.nextSibling().toElement();
+    }
+
+       return std::make_tuple(username,password);
+}
+
+
+bool Xmlmanager::validatexml(QString xml, QString xsd)
+{
+    QFile file(xsd);
+          file.open(QIODevice::ReadOnly);
+
+          QXmlSchema schema;
+          schema.load(&file, QUrl::fromLocalFile(file.fileName()));
+
+          if (schema.isValid())
+          {
+              QFile file2(xml);
+              file2.open(QIODevice::ReadOnly);
+
+              QXmlSchemaValidator validator(schema);
+              if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+              {
+                  qDebug() << "instance document is valid";
+              return true;
+
+              } else {
+                  qDebug() << "instance document is invalid";
+                  return false;
+              }
+
+          } else {
+              qDebug() << "schema is invalid";
+          }
 }

@@ -61,19 +61,8 @@ void TestServer::processTextMessage(QString message)
     if (message.mid(0, 5) == "order")
     {
         message.remove(0, 5);
-        QFile file("newOrder.xml");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        }
-        else
-        {
-            QTextStream stream(&file);
-            stream << message;
-            file.close();
-        }
-        newOrderXML.setContent(&file);
-        if (validatexml("newOrder.xml", "newOrder.xsd"))
+        xmlManager.makeFiles("order", message);
+        if (xmlManager.validatexml("newOrder.xml", "newOrder.xsd"))
         {
             newOrder();
         }
@@ -81,19 +70,8 @@ void TestServer::processTextMessage(QString message)
     else if (message.mid(0, 5) == "find ")
     {
         message.remove(0, 5);
-        QFile file("findOrder.xml");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        }
-        else
-        {
-            QTextStream stream(&file);
-            stream << message;
-            file.close();
-        }
-        findOrderXML.setContent(&file);
-        if (validatexml("findOrder.xml", "findOrder.xsd"))
+        xmlManager.makeFiles("find", message);
+        if (xmlManager.validatexml("findOrder.xml", "findOrder.xsd"))
         {
             respuesta = xmlManager.writeOrderStatusXml(findOrder());
 
@@ -104,19 +82,8 @@ void TestServer::processTextMessage(QString message)
     else if (message.mid(0, 5) == "login")
     {
         message.remove(0, 5);
-        QFile file("Login.xml");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        }
-        else
-        {
-            QTextStream stream(&file);
-            stream << message;
-            file.close();
-        }
-        LoginXML.setContent(&file);
-        if (validatexml("Login.xml", "Login.xsd"))
+        xmlManager.makeFiles("login", message);
+        if (xmlManager.validatexml("Login.xml", "Login.xsd"))
         {
             respuesta = checkLogin();
             pClient->sendTextMessage("5login" +respuesta);
@@ -127,8 +94,6 @@ void TestServer::processTextMessage(QString message)
 
 void TestServer::newOrder()
 {
-
-        xmlManager.loadXmls();
         auto newOrderXml = xmlManager.readNewOrder();
         QSqlQuery query("INSERT INTO "
                         "orders(statusorders,phoneorders,repairorders,"
@@ -145,25 +110,8 @@ void TestServer::newOrder()
 
 QString TestServer::findOrder()
 {
-    QDomElement root = findOrderXML.documentElement();
-    QDomElement Component = root.firstChild().toElement();
-    QString idorder;
-    QString result{""};
-    while (!Component.isNull())
-    {
-        if (Component.tagName() == "Order")
-        {
-            QDomElement Child = Component.firstChild().toElement();
-
-            while (!Child.isNull())
-            {
-                if (Child.tagName() == "IdOrder")
-                    idorder = Child.firstChild().toText().data();
-
-                Child = Child.nextSibling().toElement();
-            }
-        }
-        Component = Component.nextSibling().toElement();
+        QString idorder = xmlManager.readFindOrder();
+        QString result{""};
         checkProcessOrders();
         QSqlQuery query(
             "SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
@@ -174,39 +122,17 @@ QString TestServer::findOrder()
         } else {
             result = query.value(0).toString();
         }
-    }
 
        return result;
 }
 
 QString TestServer::checkLogin()
 {
-    QDomElement root = LoginXML.documentElement();
-    QDomElement Component = root.firstChild().toElement();
-    QString username;
-    QString password;
+
+    auto LoginXML = xmlManager.readLogin();
     QString result{""};
-    while (!Component.isNull())
-    {
-        if (Component.tagName() == "Login")
-        {
-            QDomElement Child = Component.firstChild().toElement();
-
-            while (!Child.isNull())
-            {
-                if (Child.tagName() == "Username")
-                    username = Child.firstChild().toText().data();
-                if (Child.tagName() == "Password")
-                    password = Child.firstChild().toText().data();
-
-                Child = Child.nextSibling().toElement();
-            }
-        }
-        Component = Component.nextSibling().toElement();
-
-
         QSqlQuery query(
-            "SELECT * FROM users WHERE iduser ='" + username + "' AND passworduser = '" + password + "'", db);
+            "SELECT * FROM users WHERE iduser ='" + std::get<0>(LoginXML) + "' AND passworduser = '" + std::get<1>(LoginXML) + "'", db);
         query.next();
         if(query.lastError().isValid())
         {
@@ -218,7 +144,6 @@ QString TestServer::checkLogin()
         } else {
            result = xmlManager.writeLoginXml(query.value(0).toString());
         }
-    }
 
        return result;
 }
@@ -266,37 +191,6 @@ void TestServer::checkQueueOrders()
     }
 }
 
-
-
-
-bool TestServer::validatexml(QString xml, QString xsd)
-{
-    QFile file(xsd);
-          file.open(QIODevice::ReadOnly);
-
-          QXmlSchema schema;
-          schema.load(&file, QUrl::fromLocalFile(file.fileName()));
-
-          if (schema.isValid())
-          {
-              QFile file2(xml);
-              file2.open(QIODevice::ReadOnly);
-
-              QXmlSchemaValidator validator(schema);
-              if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
-              {
-                  qDebug() << "instance document is valid";
-              return true;
-
-              } else {
-                  qDebug() << "instance document is invalid";
-                  return false;
-              }
-
-          } else {
-              qDebug() << "schema is invalid";
-          }
-}
 
 void TestServer::socketDisconnected()
 {
