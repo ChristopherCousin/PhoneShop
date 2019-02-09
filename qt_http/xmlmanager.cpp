@@ -2,14 +2,12 @@
 
 Xmlmanager::Xmlmanager()
 {
-
 }
-
 
 
 void Xmlmanager::makeFiles(QString fileName, QString message)
 {
-    if(fileName == "order")
+    if (fileName == "order")
     {
         QFile newOrderFile("newOrder.xml");
         if (!newOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -24,7 +22,7 @@ void Xmlmanager::makeFiles(QString fileName, QString message)
         }
         newOrderXML.setContent(&newOrderFile);
     }
-    if(fileName == "find")
+    if (fileName == "find")
     {
         QFile findOrderFile("findOrder.xml");
         if (!findOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -39,7 +37,7 @@ void Xmlmanager::makeFiles(QString fileName, QString message)
         }
         findOrderXML.setContent(&findOrderFile);
     }
-    if(fileName == "login")
+    if (fileName == "login")
     {
         QFile LoginFile("Login.xml");
         if (!LoginFile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -88,7 +86,6 @@ void Xmlmanager::loadXmls()
 
     LoginXML.setContent(&LoginFile);
     LoginFile.close();
-
 }
 
 QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
@@ -160,7 +157,7 @@ std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
         }
         Component = Component.nextSibling().toElement();
     }
-    return std::make_tuple(phone,repair,idorder);
+    return std::make_tuple(phone, repair, idorder);
 }
 
 QString Xmlmanager::readFindOrder()
@@ -168,7 +165,7 @@ QString Xmlmanager::readFindOrder()
     loadXmls();
     QDomElement root = findOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
-    QString idorder{""};
+    QString idorder{ "" };
     while (!Component.isNull())
     {
         if (Component.tagName() == "Order")
@@ -184,10 +181,9 @@ QString Xmlmanager::readFindOrder()
             }
         }
         Component = Component.nextSibling().toElement();
-
     }
 
-       return idorder;
+    return idorder;
 }
 
 std::tuple<QString, QString> Xmlmanager::readLogin()
@@ -216,35 +212,37 @@ std::tuple<QString, QString> Xmlmanager::readLogin()
         Component = Component.nextSibling().toElement();
     }
 
-       return std::make_tuple(username,password);
+    return std::make_tuple(username, password);
 }
 
 
 bool Xmlmanager::validatexml(QString xml, QString xsd)
 {
     QFile file(xsd);
-          file.open(QIODevice::ReadOnly);
+    file.open(QIODevice::ReadOnly);
 
-          QXmlSchema schema;
-          schema.load(&file, QUrl::fromLocalFile(file.fileName()));
+    QXmlSchema schema;
+    schema.load(&file, QUrl::fromLocalFile(file.fileName()));
 
-          if (schema.isValid())
-          {
-              QFile file2(xml);
-              file2.open(QIODevice::ReadOnly);
+    if (schema.isValid())
+    {
+        QFile file2(xml);
+        file2.open(QIODevice::ReadOnly);
 
-              QXmlSchemaValidator validator(schema);
-              if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
-              {
-                  qDebug() << "instance document is valid";
-              return true;
-
-              } else {
-                  qDebug() << "instance document is invalid";
-                  return false;
-              }
-
-          } else {
-              qDebug() << "schema is invalid";
-          }
+        QXmlSchemaValidator validator(schema);
+        if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+        {
+            qDebug() << "instance document is valid";
+            return true;
+        }
+        else
+        {
+            qDebug() << "instance document is invalid";
+            return false;
+        }
+    }
+    else
+    {
+        qDebug() << "schema is invalid";
+    }
 }

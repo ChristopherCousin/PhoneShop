@@ -12,12 +12,7 @@ TestServer::TestServer(quint16 port)
             &TestServer::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &TestServer::closed);
     } // end if
-
-    connectDatabase();
-
 }
-
-
 
 TestServer::~TestServer()
 {
@@ -25,20 +20,7 @@ TestServer::~TestServer()
     qDeleteAll(m_clients.begin(), m_clients.end());
 }
 
-void TestServer::connectDatabase()
-{
-    db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName("127.0.0.1");
-    db.setPort(5432);
-    db.setDatabaseName("phoneshop");
-    db.setUserName("usuario");
-    db.setPassword("usuario");
-    bool ok = db.open();
-    if (!ok)
-    {
 
-    }
-}
 void TestServer::onNewConnection()
 {
     QWebSocket* pSocket = m_pWebSocketServer->nextPendingConnection();
@@ -76,7 +58,6 @@ void TestServer::processTextMessage(QString message)
             respuesta = xmlManager.writeOrderStatusXml(findOrder());
 
             pClient->sendTextMessage("9findOrder" + respuesta);
-
         }
     }
     else if (message.mid(0, 5) == "login")
@@ -86,109 +67,39 @@ void TestServer::processTextMessage(QString message)
         if (xmlManager.validatexml("Login.xml", "Login.xsd"))
         {
             respuesta = checkLogin();
-            pClient->sendTextMessage("5login" +respuesta);
+            pClient->sendTextMessage("5login" + respuesta);
         }
     }
-
 }
 
 void TestServer::newOrder()
 {
-        auto newOrderXml = xmlManager.readNewOrder();
-        QSqlQuery query("INSERT INTO "
-                        "orders(statusorders,phoneorders,repairorders,"
-                        "orderidorders,dateorders) values('On the way of the technician','"
-                + std::get<0>(newOrderXml) + "', '" + std::get<1>(newOrderXml) + "', '" + std::get<2>(newOrderXml) + "',current_timestamp);",
-            db);
-
-        if(!query.lastError().isValid())
-        {
-            qDebug() << "Error en consulta: " << query.lastError();
-        }
-    }
+    auto newOrderXml = xmlManager.readNewOrder();
+    dbManager.newOrder(
+        std::get<0>(newOrderXml), std::get<1>(newOrderXml), std::get<2>(newOrderXml));
+}
 
 
 QString TestServer::findOrder()
 {
-        QString idorder = xmlManager.readFindOrder();
-        QString result{""};
-        checkProcessOrders();
-        QSqlQuery query(
-            "SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
-        query.next();
-        if(query.lastError().isValid())
-        {
-            result = "This order does not exist";
-        } else {
-            result = query.value(0).toString();
-        }
-
-       return result;
+    QString idorder = xmlManager.readFindOrder();
+    QString result{ "" };
+    result = dbManager.findOrder(idorder);
+    return result;
 }
 
 QString TestServer::checkLogin()
 {
 
     auto LoginXML = xmlManager.readLogin();
-    QString result{""};
-        QSqlQuery query(
-            "SELECT * FROM users WHERE iduser ='" + std::get<0>(LoginXML) + "' AND passworduser = '" + std::get<1>(LoginXML) + "'", db);
-        query.next();
-        if(query.lastError().isValid())
-        {
-            result = "Error";
-        }
-        else if(query.numRowsAffected() == 0)
-        {
-            result = "No";
-        } else {
-           result = xmlManager.writeLoginXml(query.value(0).toString());
-        }
+    QString result = dbManager.checkLogin(std::get<0>(LoginXML), std::get<1>(LoginXML));
 
-       return result;
+    return result;
 }
 
 void TestServer::checkProcessOrders()
 {
-    QSqlQuery query(
-        "SELECT orderidorders,EXTRACT(EPOCH FROM (NOW() - dateorders)),statusorders FROM orders WHERE statusorders = 'in process'", db);
-    while (query.next())
-    {
-        if(query.lastError().isValid())
-        {
-            qDebug() << "Error in query checkProcressOrders";
-        }
-        if(query.value(1).toInt() >= 7200 && query.value(2).toString() == "in process")
-        {
-            QSqlQuery query2(
-                "UPDATE orders SET statusorders = 'done' where orderidorders = '" +query.value(0).toString() + "';", db);
-            if(query2.lastError().isValid())
-            {
-                qDebug() << "Error in query checkProcressOrders";
-            }
-        }
-    }
-}
-
-void TestServer::checkQueueOrders()
-{
-    int queue = 0;
-    QSqlQuery query(
-        "SELECT orderidorders,statusorders FROM orders WHERE statusorders != 'done'", db);
-    while (query.next())
-    {
-        if(query.value(1).toString() == "in process")
-        {
-            if(queue == 0)
-            {
-                queue++;
-            } else {
-                queue++;
-            }
-        } else {
-            queue--;
-        }
-    }
+    dbManager.checkProcessOrders();
 }
 
 

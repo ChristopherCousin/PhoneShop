@@ -168,7 +168,7 @@ void MainWindow::readFoundedOrderXML()
         file.close();
     }
 
-    if(validatexml("FoundedOrder.xml", "FoundedOrder.xsd"))
+    if (validatexml("FoundedOrder.xml", "FoundedOrder.xsd"))
     {
         QDomElement root = xmlFoundedOrder.documentElement();
 
@@ -189,19 +189,19 @@ void MainWindow::readFoundedOrderXML()
 
                     Child = Child.nextSibling().toElement();
                 }
-
             }
             Component = Component.nextSibling().toElement();
         }
-        if(status == "done")
+        if (status == "done")
         {
-            ui->result_label->setStyleSheet({"QLabel{ color:green;}"});
-        } else {
-            ui->result_label->setStyleSheet({""});
+            ui->result_label->setStyleSheet({ "QLabel{ color:green;}" });
         }
-            ui->result_label->setText(status);
+        else
+        {
+            ui->result_label->setStyleSheet({ "" });
+        }
+        ui->result_label->setText(status);
     }
-
 }
 
 void MainWindow::readLoginXML()
@@ -218,7 +218,7 @@ void MainWindow::readLoginXML()
         file.close();
     }
 
-    if(validatexml("Login2.xml", "Login2.xsd"))
+    if (validatexml("Login2.xml", "Login2.xsd"))
     {
         QDomElement root = xmlLogin.documentElement();
 
@@ -239,47 +239,46 @@ void MainWindow::readLoginXML()
 
                     Child = Child.nextSibling().toElement();
                 }
-
             }
             Component = Component.nextSibling().toElement();
         }
-        if(user != "")
+        if (user != "")
         {
             username = user;
             onLoginSuccessfully();
         }
-
     }
-
 }
 
 bool MainWindow::validatexml(QString xml, QString xsd)
 {
     QFile file(xsd);
-          file.open(QIODevice::ReadOnly);
+    file.open(QIODevice::ReadOnly);
 
-          QXmlSchema schema;
-          schema.load(&file, QUrl::fromLocalFile(file.fileName()));
+    QXmlSchema schema;
+    schema.load(&file, QUrl::fromLocalFile(file.fileName()));
 
-          if (schema.isValid())
-          {
-              QFile file2(xml);
-              file2.open(QIODevice::ReadOnly);
+    if (schema.isValid())
+    {
+        QFile file2(xml);
+        file2.open(QIODevice::ReadOnly);
 
-              QXmlSchemaValidator validator(schema);
-              if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
-              {
-                  qDebug() << "instance document is valid";
-              return true;
-
-              } else {
-                  qDebug() << "instance document is invalid";
-                  return false;
-              }
-
-          } else {
-              qDebug() << "schema is invalid";
-          }
+        QXmlSchemaValidator validator(schema);
+        if (validator.validate(&file2, QUrl::fromLocalFile(file2.fileName())))
+        {
+            qDebug() << "instance document is valid";
+            return true;
+        }
+        else
+        {
+            qDebug() << "instance document is invalid";
+            return false;
+        }
+    }
+    else
+    {
+        qDebug() << "schema is invalid";
+    }
 }
 
 void MainWindow::writeOrderXML()
@@ -419,62 +418,57 @@ void MainWindow::writeLoginXML()
 
 void MainWindow::recibirmensaje(QString message)
 {
-    int toCute = message.mid(0,1).toInt();
-    message.remove(0,1);
-    if(message.mid(0,toCute) == "findOrder")
+    int toCute = message.mid(0, 1).toInt();
+    message.remove(0, 1);
+    if (message.mid(0, toCute) == "findOrder")
     {
-        message.remove(0,toCute);
+        message.remove(0, toCute);
         xmlFoundedOrder.setContent(message);
         readFoundedOrderXML();
-
     }
-    else if(message.mid(0,toCute) == "login")
+    else if (message.mid(0, toCute) == "login")
     {
-        message.remove(0,toCute);
-        if(message == "No")
+        message.remove(0, toCute);
+        if (message == "No")
         {
-            QMessageBox::information(
-                    this,
-                    tr("Error"),
-                    tr("Authentication failed") );
-        } else {
+            QMessageBox::information(this, tr("Error"), tr("Authentication failed"));
+        }
+        else
+        {
             xmlLogin.setContent(message);
             readLoginXML();
         }
     }
-
 }
 
 void MainWindow::onLoginSuccessfully()
 {
     ui->actionLog_out->setVisible(true);
     ui->actionLogin->setVisible(false);
-        ui->tabWidget->tabBar()->show();
-        ordersSizeWindow.setHeight(461);
-        ordersSizeWindow.setWidth(518);
-        ordersSizeLabel.setHeight(201);
-        ui->label_client1->setVisible(true);
-        ui->label_client2->setVisible(true);
-        ui->label_client3->setVisible(true);
-        ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
+    ui->tabWidget->tabBar()->show();
+    ordersSizeWindow.setHeight(461);
+    ordersSizeWindow.setWidth(518);
+    ordersSizeLabel.setHeight(201);
+    ui->label_client1->setVisible(true);
+    ui->label_client2->setVisible(true);
+    ui->label_client3->setVisible(true);
+    ui->statusOfOrderLabel->setFixedSize(ordersSizeLabel);
     ui->tabWidget->tabBar()->show();
     ui->tabWidget->setCurrentIndex(0);
     ui->tab_3->setEnabled(false);
-
 }
 
 void MainWindow::onLogOutSuccessfully()
 {
     startConfig();
-
 }
 
 void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
 {
     ui->comboBox_2->clear();
     readRepairsXML();
-    if(ui->comboBox_2->currentText() == ""){
-
+    if (ui->comboBox_2->currentText() == "")
+    {
     }
 }
 
@@ -487,8 +481,7 @@ void MainWindow::on_btn_newRepair_clicked()
 void MainWindow::on_btn_findOrder_clicked()
 {
     writeFindOrderXML();
-    //ui->result_label->setText(Websocket::statusMessage);
-
+    // ui->result_label->setText(Websocket::statusMessage);
 }
 
 void MainWindow::on_actionLogin_triggered()
@@ -503,18 +496,18 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
-    switch(index)
+    switch (index)
     {
-    case 0:
-        this->setFixedSize(ordersSizeWindow);
-        qDebug() << ordersSizeWindow;
-        break;
-    case 1:
-        this->setFixedSize(518,345);
-        break;
-    case 2:
-        this->setFixedSize(518,375);
-        break;
+        case 0:
+            this->setFixedSize(ordersSizeWindow);
+            qDebug() << ordersSizeWindow;
+            break;
+        case 1:
+            this->setFixedSize(518, 345);
+            break;
+        case 2:
+            this->setFixedSize(518, 375);
+            break;
     }
 }
 
@@ -528,7 +521,6 @@ void MainWindow::on_actionLog_out_triggered()
     onLogOutSuccessfully();
 }
 
-void MainWindow::on_comboBox_2_currentIndexChanged(const QString &arg1)
+void MainWindow::on_comboBox_2_currentIndexChanged(const QString& arg1)
 {
-
 }
