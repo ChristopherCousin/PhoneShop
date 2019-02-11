@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <QString>
+#include <QWebSocket>
 
 class ConexionesWS
 {
 public:
-    QString websocket{""};
+    QWebSocket* websocket;
     QString user{""};
 
 private:

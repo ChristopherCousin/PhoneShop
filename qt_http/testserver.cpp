@@ -30,9 +30,8 @@ void TestServer::onNewConnection()
     connect(pSocket, &QWebSocket::disconnected, this, &TestServer::socketDisconnected);
 
     m_clients << pSocket;
-    ConexionesWS conexionWS;
-    conexionWS.websocket = QString::toStdString(pSocket);
-    qDebug() << conexionWS.websocket;
+    conexionWS.websocket = pSocket;
+
 }
 
 
@@ -84,6 +83,7 @@ void TestServer::newOrder()
 
 QString TestServer::findOrder()
 {
+    qDebug() << conexionWS.user;
     QString idorder = xmlManager.readFindOrder();
     QString result{ "" };
     result = dbManager.findOrder(idorder);
@@ -95,7 +95,6 @@ QString TestServer::checkLogin()
 
     auto LoginXML = xmlManager.readLogin();
     QString result = dbManager.checkLogin(std::get<0>(LoginXML), std::get<1>(LoginXML));
-
     return result;
 }
 

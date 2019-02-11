@@ -48,6 +48,7 @@ private:
 
     Xmlmanager xmlManager;
     Dbmanager dbManager;
+    ConexionesWS conexionWS;
 };
 
 #endif
