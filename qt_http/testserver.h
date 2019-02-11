@@ -12,6 +12,7 @@
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
 #include "dbmanager.h"
+#include "conexionws.h"
 
 
 class QWebSocketServer;
@@ -44,6 +45,7 @@ private slots:
 private:
     QWebSocketServer *m_pWebSocketServer;
     QList<QWebSocket *> m_clients;
+
     Xmlmanager xmlManager;
     Dbmanager dbManager;
 };

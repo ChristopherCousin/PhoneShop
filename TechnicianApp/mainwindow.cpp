@@ -6,9 +6,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QTimer::singleShot(0, this, SLOT(go()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::go()
+{
+    m_webSocket = new Websocket(QUrl("ws://localhost:3344"));
 }

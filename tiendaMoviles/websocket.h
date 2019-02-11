@@ -23,7 +23,6 @@ public slots:
 signals:
      void recibirmensaje(QString);
 
-
 private:
     QWebSocket *m_webSocket;
     QUrl m_uri;

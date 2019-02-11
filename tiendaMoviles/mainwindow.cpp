@@ -154,6 +154,48 @@ void MainWindow::readRepairsXML()
     }
 }
 
+void MainWindow::readPricesXML()
+{
+    QDomElement root = xmlRepairs.documentElement();
+
+    QDomElement Component = root.firstChild().toElement();
+
+    while (!Component.isNull())
+    {
+        if (Component.tagName() == "Phone")
+        {
+
+            QDomElement Child = Component.firstChild().toElement();
+
+            QString name;
+            QString repair;
+            while (!Child.isNull())
+            {
+                if (Child.tagName() == "Name")
+                    name = Child.firstChild().toText().data();
+                if (name == ui->comboBox->currentText())
+                {
+                    Child = Child.nextSibling().toElement();
+                    if (Child.tagName() == "Repair")
+                    {
+                        repair = Child.firstChild().toText().data();
+                        Child = Child.nextSibling().toElement();
+                        if (repair == ui->comboBox_2->currentText())
+                        {
+                            ui->label_price->setText("Price: " + Child.firstChild().toText().data());
+                        }
+                    }
+                }
+
+
+                Child = Child.nextSibling().toElement();
+            }
+        }
+
+        Component = Component.nextSibling().toElement();
+    }
+}
+
 void MainWindow::readFoundedOrderXML()
 {
     QFile file("FoundedOrder.xml");
@@ -469,6 +511,12 @@ void MainWindow::on_comboBox_currentTextChanged(const QString& arg1)
     readRepairsXML();
     if (ui->comboBox_2->currentText() == "")
     {
+        ui->comboBox_2->setEnabled(false);
+        ui->label_price->setText("There're no repairs for this mobile");
+        ui->btn_newRepair->setEnabled(false);
+    } else {
+        ui->comboBox_2->setEnabled(true);
+        ui->btn_newRepair->setEnabled(true);
     }
 }
 
@@ -523,4 +571,5 @@ void MainWindow::on_actionLog_out_triggered()
 
 void MainWindow::on_comboBox_2_currentIndexChanged(const QString& arg1)
 {
+    readPricesXML();
 }

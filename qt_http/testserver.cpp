@@ -24,13 +24,15 @@ TestServer::~TestServer()
 void TestServer::onNewConnection()
 {
     QWebSocket* pSocket = m_pWebSocketServer->nextPendingConnection();
-
     qDebug() << "Socket conectado:" << pSocket;
 
     connect(pSocket, &QWebSocket::textMessageReceived, this, &TestServer::processTextMessage);
     connect(pSocket, &QWebSocket::disconnected, this, &TestServer::socketDisconnected);
 
     m_clients << pSocket;
+    ConexionesWS conexionWS;
+    conexionWS.websocket = QString::toStdString(pSocket);
+    qDebug() << conexionWS.websocket;
 }
 
 

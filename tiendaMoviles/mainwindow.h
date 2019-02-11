@@ -32,6 +32,7 @@ public:
     void readRepairsXML();
     void readFoundedOrderXML();
     void readLoginXML();
+    void readPricesXML();
     void writeOrderXML();
     void writeFindOrderXML();
     void writeLoginXML();
