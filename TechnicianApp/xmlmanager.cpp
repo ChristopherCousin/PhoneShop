@@ -94,13 +94,14 @@ QString Xmlmanager::writeRequestOrdersXml()
     QDomElement root = document.createElement("Orders");
 
 
-    QDomElement order = document.createElement("Message");
+    QDomElement login = document.createElement("Order");
+    QDomElement user = document.createElement("Message");
+    QString messageorder = "Resquest Orders";
+    QDomText logintxt = document.createTextNode(messageorder);
 
-    QDomText ordertxt = document.createTextNode("Request All Orders");
-
-
-    order.appendChild(ordertxt);
-    root.appendChild(order);
+    user.appendChild(logintxt);
+    login.appendChild(user);
+    root.appendChild(login);
     document.appendChild(root);
 
     QString message = document.toString();

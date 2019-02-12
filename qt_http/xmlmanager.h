@@ -15,7 +15,6 @@
 #include <QtXmlPatterns/QXmlSchemaValidator>
 #include <QSqlQuery>
 #include <QSql>
-#include "dbmanager.h"
 
 class Xmlmanager
 {
@@ -26,6 +25,7 @@ public:
     std::tuple<QString, QString> readLogin();
     QString writeOrderStatusXml(QString orderStatus);
     QString writeLoginXml(QString orderStatus);
+    QString writeOrdersXml(QSqlQuery query);
     void loadXmls();
     bool validatexml(QString xml, QString xsd);
     void makeFiles(QString fileName, QString message);
@@ -36,7 +36,6 @@ private:
     QDomDocument findOrderXML;
     QDomDocument LoginXML;
     QDomDocument OrdersXML;
-    Dbmanager dbManager;
 };
 
 #endif // XMLMANAGER_H

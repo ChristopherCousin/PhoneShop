@@ -1,5 +1,5 @@
 #include "dbmanager.h"
-
+#include "xmlmanager.h"
 Dbmanager::Dbmanager()
 {
     db = QSqlDatabase::addDatabase("QPSQL");
@@ -18,11 +18,16 @@ Dbmanager::Dbmanager()
 void Dbmanager::newOrder(QString phone, QString repair, QString idorder)
 {
 
-    QSqlQuery query("INSERT INTO "
+    QSqlQuery query;
+    query.prepare("INSERT INTO "
                     "orders(statusorders,phoneorders,repairorders,"
-                    "orderidorders,dateorders) values('On the way of the technician','"
-            + phone + "', '" + repair + "', '" + idorder + "',current_timestamp);",
-        db);
+                    "orderidorders,dateorders) values('On the way of the technician',"
+            "?,?,?,current_timestamp);");
+
+    query.bindValue(0, phone);
+    query.bindValue(1, repair);
+    query.bindValue(2, idorder);
+    query.exec();
 
     if (!query.lastError().isValid())
     {
@@ -67,7 +72,7 @@ QString Dbmanager::checkLogin(QString username, QString password)
     }
     else
     {
-        result = xmlManager.writeLoginXml(query.value(0).toString());
+        result = xmlManager->writeLoginXml(query.value(0).toString());
     }
 
     return result;

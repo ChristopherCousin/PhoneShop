@@ -24,6 +24,6 @@ void MainWindow::go()
 
 void MainWindow::receivemessage(QString message)
 {
-
+    qDebug() << message;
 }
 

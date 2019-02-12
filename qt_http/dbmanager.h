@@ -9,6 +9,7 @@
 #include <QDebug>
 #include "xmlmanager.h"
 
+
 class Dbmanager
 {
 public:
@@ -18,9 +19,10 @@ public:
     QString checkLogin(QString username, QString password);
     void checkProcessOrders();
     QSqlQuery availableRepairs();
+
 private:
     QSqlDatabase db;
-    Xmlmanager xmlManager;
+    Xmlmanager *xmlManager;
 };
 
 #endif // DBMANAGER_H

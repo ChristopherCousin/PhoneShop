@@ -21,6 +21,7 @@ public:
     std::tuple<QString,QString, QString> readNewOrder();
     QString readFindOrder();
     std::tuple<QString, QString> readLogin();
+    std::tuple<QString, QString, QString> readOrders();
     QString writeOrderStatusXml(QString orderStatus);
     QString writeLoginXml(QString orderStatus);
     void loadXmls();

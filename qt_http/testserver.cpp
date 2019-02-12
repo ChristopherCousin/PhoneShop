@@ -75,7 +75,7 @@ void TestServer::processTextMessage(QString message)
     {
         message.remove(0, 6);
         xmlManager.makeFiles("orders", message);
-        if (xmlManager.validatexml("newOrder.xml", "newOrder.xsd"))
+        if (xmlManager.validatexml("Orders.xml", "Orders.xsd"))
         {
             newOrder();
         }

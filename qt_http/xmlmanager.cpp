@@ -134,13 +134,13 @@ QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
     return message;
 }
 
-QString Xmlmanager::writeOrdersXml()
+QString Xmlmanager::writeOrdersXml(QSqlQuery query)
 {
     QDomDocument document;
     QDomElement root = document.createElement("Orders");
 
 
-    QSqlQuery query = dbManager.availableRepairs();
+
 
     while(query.next())
     {
