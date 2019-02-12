@@ -1,7 +1,7 @@
 <Orders>
  <Order>
-  <IdOrder>{ba9584c2-35a8-4150-b4fd-2e213c71de59}</IdOrder>
-  <repair></repair>
-  <Phone>Iphone 7</Phone>
+  <IdOrder>{62f533b3-9ad4-421e-bbdd-bcc66fa69776}</IdOrder>
+  <repair>100</repair>
+  <Phone>Android</Phone>
  </Order>
 </Orders>

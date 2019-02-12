@@ -5,7 +5,7 @@ Xmlmanager::Xmlmanager()
 }
 
 
-void Xmlmanager::makeFiles(QString fileName, QString message)
+QString Xmlmanager::makeFiles(QString fileName, QString message)
 {
     if (fileName == "order")
     {
@@ -67,51 +67,24 @@ void Xmlmanager::makeFiles(QString fileName, QString message)
         }
         OrdersXML.setContent(&OrdersXMLFile);
     }
+
+    if (fileName == "validate")
+    {
+        QTemporaryFile file;
+        if (!file.open())
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&file);
+            stream << message;
+            file.close();
+        }
+        return file.fileName();
+    }
 }
 
-void Xmlmanager::loadXmls()
-{
-    QFile OrdersXMLFile("OrdersXML.xml");
-    if (!OrdersXMLFile.open(QIODevice::ReadOnly))
-    {
-        // Error
-        std::cerr << "Error while loading file" << std::endl;
-    }
-
-    OrdersXML.setContent(&OrdersXMLFile);
-    OrdersXMLFile.close();
-
-    QFile newOrderFile("newOrder.xml");
-    if (!newOrderFile.open(QIODevice::ReadOnly))
-    {
-        // Error
-        std::cerr << "Error while loading file" << std::endl;
-    }
-
-    newOrderXML.setContent(&newOrderFile);
-    newOrderFile.close();
-
-
-    QFile findOrderFile("findOrder.xml");
-    if (!findOrderFile.open(QIODevice::ReadOnly))
-    {
-        // Error
-        std::cerr << "Error while loading file" << std::endl;
-    }
-    findOrderXML.setContent(&findOrderFile);
-    findOrderFile.close();
-
-
-    QFile LoginFile("Login.xml");
-    if (!LoginFile.open(QIODevice::ReadOnly))
-    {
-        // Error
-        std::cerr << "Error while loading file" << std::endl;
-    }
-
-    LoginXML.setContent(&LoginFile);
-    LoginFile.close();
-}
 
 QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
 {
@@ -206,7 +179,6 @@ QString Xmlmanager::writeLoginXml(QString logininfo)
 
 std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
 {
-    loadXmls();
     QDomElement root = newOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder;
@@ -237,7 +209,6 @@ std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
 
 QString Xmlmanager::readFindOrder()
 {
-    loadXmls();
     QDomElement root = findOrderXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder{ "" };
@@ -263,7 +234,6 @@ QString Xmlmanager::readFindOrder()
 
 std::tuple<QString, QString> Xmlmanager::readLogin()
 {
-    loadXmls();
     QDomElement root = LoginXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString username;
@@ -320,4 +290,9 @@ bool Xmlmanager::validatexml(QString xml, QString xsd)
     {
         qDebug() << "schema is invalid";
     }
+}
+
+bool Xmlmanager::xmlisValid(QString xml)
+{
+
 }

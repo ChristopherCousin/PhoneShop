@@ -39,7 +39,10 @@ void TestServer::processTextMessage(QString message)
 {
     QString respuesta;
     pClient = qobject_cast<QWebSocket*>(sender());
-    qDebug() << "De:" << pClient << "Mensaje recibido:" << message.mid(0, 5);
+    qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
+
+    qDebug() << xmlManager.makeFiles("validate", message);
+
 
     if (message.mid(0, 5) == "order")
     {

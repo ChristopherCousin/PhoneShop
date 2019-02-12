@@ -335,30 +335,35 @@ void MainWindow::writeOrderXML()
     QDomElement idorder = document.createElement("IdOrder");
     QDomElement phone = document.createElement("Phone");
     QDomElement repair = document.createElement("repair");
+    QDomElement action = document.createElement("Action");
 
 
     QUuid idordert = QUuid::createUuid();
     QString phonet = ui->comboBox->currentText();
     QString repairt = ui->comboBox_2->currentText();
+    QString actiontxt = "order";
 
     QDomText idordertxt = document.createTextNode(idordert.toString());
     QDomText phonetxt = document.createTextNode(phonet);
     QDomText repairtxt = document.createTextNode(repairt);
+    QDomText actionData = document.createTextNode(actiontxt);
 
 
     idorder.appendChild(idordertxt);
     repair.appendChild(repairtxt);
     phone.appendChild(phonetxt);
+    action.appendChild(actionData);
     order.appendChild(idorder);
     order.appendChild(repair);
     order.appendChild(phone);
     root.appendChild(order);
     document.appendChild(root);
 
-    QString message = "order" + document.toString();
+    QString message = document.toString();
     m_webSocket->sendXML(message);
-    qDebug() << message;
-    // escribimos en el file
+
+
+
     QFile file("newOrder.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -383,17 +388,22 @@ void MainWindow::writeFindOrderXML()
 
     QDomElement order = document.createElement("Order");
     QDomElement idorder = document.createElement("IdOrder");
+    QDomElement action = document.createElement("Action");
 
+    QString actiontxt = "find  ";
 
     QDomText idordertxt = document.createTextNode(ui->lineEdit_2->text());
+    QDomText actionData = document.createTextNode(actiontxt);
 
 
     idorder.appendChild(idordertxt);
+    action.appendChild(actionData);
+    order.appendChild(action);
     order.appendChild(idorder);
     root.appendChild(order);
     document.appendChild(root);
 
-    QString message = "find " + document.toString();
+    QString message = document.toString();
     m_webSocket->sendXML(message);
 
     // escribimos en el file
@@ -422,26 +432,30 @@ void MainWindow::writeLoginXML()
     QDomElement login = document.createElement("Login");
     QDomElement username = document.createElement("Username");
     QDomElement password = document.createElement("Password");
+    QDomElement action = document.createElement("Action");
 
 
     QString usernamet = ui->lineEdit_username->text();
     QString passwordt = ui->lineEdit_password->text();
+    QString actiontxt = "login";
 
     QDomText usernametxt = document.createTextNode(usernamet);
     QDomText passwordtxt = document.createTextNode(passwordt);
+    QDomText actionData = document.createTextNode(actiontxt);
 
 
     username.appendChild(usernametxt);
     password.appendChild(passwordtxt);
+    action.appendChild(actionData);
     login.appendChild(username);
     login.appendChild(password);
     root.appendChild(login);
     document.appendChild(root);
 
-    QString message = "login" + document.toString();
+    QString message = document.toString();
     m_webSocket->sendXML(message);
 
-    // escribimos en el file
+
     QFile file("Login.xml");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {

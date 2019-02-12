@@ -15,6 +15,7 @@
 #include <QtXmlPatterns/QXmlSchemaValidator>
 #include <QSqlQuery>
 #include <QSql>
+#include <QTemporaryFile>
 
 class Xmlmanager
 {
@@ -26,9 +27,9 @@ public:
     QString writeOrderStatusXml(QString orderStatus);
     QString writeLoginXml(QString orderStatus);
     QString writeOrdersXml(QSqlQuery query);
-    void loadXmls();
     bool validatexml(QString xml, QString xsd);
-    void makeFiles(QString fileName, QString message);
+    bool xmlisValid(QString xml);
+    QString makeFiles(QString fileName, QString message);
 
 
 private:

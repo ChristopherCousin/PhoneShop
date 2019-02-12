@@ -1,5 +1,7 @@
 #include "dbmanager.h"
 #include "xmlmanager.h"
+
+
 Dbmanager::Dbmanager()
 {
     db = QSqlDatabase::addDatabase("QPSQL");
@@ -40,7 +42,11 @@ QString Dbmanager::findOrder(QString idorder)
 {
 
     QString result{ "" };
-    QSqlQuery query("SELECT statusorders FROM orders where orderidorders = '" + idorder + "';", db);
+    QSqlQuery query;
+    query.prepare("SELECT statusorders FROM orders where orderidorders = ?;");
+    query.bindValue(0, idorder);
+    query.exec();
+
     query.next();
     if (query.lastError().isValid())
     {
@@ -58,9 +64,12 @@ QString Dbmanager::checkLogin(QString username, QString password)
 {
 
     QString result{ "" };
-    QSqlQuery query("SELECT * FROM users WHERE iduser ='" + username + "' AND passworduser = '"
-            + password + "'",
-        db);
+    QSqlQuery query;
+    query.prepare("SELECT * FROM users WHERE iduser = ? AND passworduser = ?");
+    query.bindValue(0, username);
+    query.bindValue(1, password);
+    query.exec();
+
     query.next();
     if (query.lastError().isValid())
     {
@@ -80,6 +89,8 @@ QString Dbmanager::checkLogin(QString username, QString password)
 
 void Dbmanager::checkProcessOrders()
 {
+    int seconds{};
+    seconds = 7200;
     QSqlQuery query("SELECT orderidorders,EXTRACT(EPOCH FROM (NOW() - dateorders)),statusorders "
                     "FROM orders WHERE statusorders = 'in process'",
         db);
@@ -89,7 +100,7 @@ void Dbmanager::checkProcessOrders()
         {
             qDebug() << "Error in query checkProcressOrders";
         }
-        if (query.value(1).toInt() >= 7200 && query.value(2).toString() == "in process")
+        if (query.value(1).toInt() >= seconds && query.value(2).toString() == "in process")
         {
             QSqlQuery query2("UPDATE orders SET statusorders = 'done' where orderidorders = '"
                     + query.value(0).toString() + "';",
