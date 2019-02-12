@@ -51,6 +51,7 @@ public:
     QLineEdit *lineEdit_2;
     QLabel *label_9;
     QPushButton *pushButton;
+    QLabel *label_10;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -60,7 +61,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(487, 518);
+        MainWindow->resize(487, 544);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -115,33 +116,37 @@ public:
         label_6->setFont(font1);
         line_4 = new QFrame(tab);
         line_4->setObjectName(QStringLiteral("line_4"));
-        line_4->setGeometry(QRect(10, 240, 441, 16));
+        line_4->setGeometry(QRect(10, 270, 441, 16));
         line_4->setFrameShape(QFrame::HLine);
         line_4->setFrameShadow(QFrame::Sunken);
         lineEdit = new QLineEdit(tab);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(150, 258, 291, 32));
+        lineEdit->setGeometry(QRect(150, 288, 291, 32));
         label_7 = new QLabel(tab);
         label_7->setObjectName(QStringLiteral("label_7"));
-        label_7->setGeometry(QRect(20, 210, 131, 31));
+        label_7->setGeometry(QRect(20, 206, 131, 31));
         label_7->setFont(font1);
         label_8 = new QLabel(tab);
         label_8->setObjectName(QStringLiteral("label_8"));
-        label_8->setGeometry(QRect(20, 257, 121, 31));
+        label_8->setGeometry(QRect(20, 287, 121, 31));
         label_8->setFont(font1);
         lineEdit_2 = new QLineEdit(tab);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(80, 300, 361, 32));
+        lineEdit_2->setGeometry(QRect(80, 330, 361, 32));
         label_9 = new QLabel(tab);
         label_9->setObjectName(QStringLiteral("label_9"));
-        label_9->setGeometry(QRect(20, 300, 61, 31));
+        label_9->setGeometry(QRect(20, 330, 61, 31));
         label_9->setFont(font1);
         pushButton = new QPushButton(tab);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(167, 350, 131, 41));
+        pushButton->setGeometry(QRect(167, 380, 131, 41));
         QFont font2;
         font2.setPointSize(13);
         pushButton->setFont(font2);
+        label_10 = new QLabel(tab);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setGeometry(QRect(20, 240, 51, 31));
+        label_10->setFont(font1);
         tabWidget->addTab(tab, QString());
         label_2->raise();
         label->raise();
@@ -158,6 +163,7 @@ public:
         lineEdit_2->raise();
         label_9->raise();
         pushButton->raise();
+        label_10->raise();
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         tabWidget->addTab(tab_2, QString());
@@ -178,6 +184,9 @@ public:
 
         retranslateUi(MainWindow);
 
+        tabWidget->setCurrentIndex(0);
+
+
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
@@ -194,8 +203,9 @@ public:
         label_8->setText(QApplication::translate("MainWindow", "New Status*:", Q_NULLPTR));
         label_9->setText(QApplication::translate("MainWindow", "Note:", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MainWindow", "Update repair", Q_NULLPTR));
+        label_10->setText(QApplication::translate("MainWindow", "Date:", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Orders", Q_NULLPTR));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Users", Q_NULLPTR));
     } // retranslateUi
 
 };

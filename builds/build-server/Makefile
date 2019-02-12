@@ -529,7 +529,8 @@ testserver.o: ../../qt_http/testserver.cpp ../../qt_http/testserver.h \
 		../../qt_http/conexionws.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o testserver.o ../../qt_http/testserver.cpp
 
-xmlmanager.o: ../../qt_http/xmlmanager.cpp ../../qt_http/xmlmanager.h
+xmlmanager.o: ../../qt_http/xmlmanager.cpp ../../qt_http/xmlmanager.h \
+		../../qt_http/dbmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o xmlmanager.o ../../qt_http/xmlmanager.cpp
 
 dbmanager.o: ../../qt_http/dbmanager.cpp ../../qt_http/dbmanager.h \

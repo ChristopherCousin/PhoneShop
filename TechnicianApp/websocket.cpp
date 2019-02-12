@@ -10,6 +10,7 @@ Websocket::Websocket(QUrl uri, QObject *parent) :
     connect(m_webSocket, SIGNAL(connected()), this, SLOT(onConnected()));
     connect(m_webSocket, SIGNAL(textMessageReceived(QString)), this, SLOT(processTextMessage(QString)));
     m_webSocket->open(m_uri);
+    xml
 }
 
 
@@ -25,5 +26,5 @@ void Websocket::sendXML(QString xml)
 
 void Websocket::processTextMessage(QString message)
 {
-    emit recibirmensaje(message);
+    emit receivemessage(message);
 }

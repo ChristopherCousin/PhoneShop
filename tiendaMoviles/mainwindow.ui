@@ -30,7 +30,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="enabled">
@@ -331,7 +331,7 @@ color: white;
          <string>Login</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset>
           <normaloff>:/Resources/Resources/login.png</normaloff>:/Resources/Resources/login.png</iconset>
         </property>
         <property name="iconSize">
@@ -359,7 +359,7 @@ color: white;
          <string>Back</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset>
           <normaloff>:/Resources/Resources/back.png</normaloff>:/Resources/Resources/back.png</iconset>
         </property>
         <property name="iconSize">
@@ -387,7 +387,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset>
           <normaloff>:/Resources/Resources/username.png</normaloff>:/Resources/Resources/username.png</iconset>
         </property>
         <property name="iconSize">
@@ -415,7 +415,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset>
           <normaloff>:/Resources/Resources/password.png</normaloff>:/Resources/Resources/password.png</iconset>
         </property>
         <property name="iconSize">
@@ -636,8 +636,6 @@ color: white;
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

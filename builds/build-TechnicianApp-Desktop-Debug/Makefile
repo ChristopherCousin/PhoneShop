@@ -52,11 +52,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../../TechnicianApp/main.cpp \
 		../../TechnicianApp/mainwindow.cpp \
-		../../TechnicianApp/websocket.cpp moc_mainwindow.cpp \
+		../../TechnicianApp/websocket.cpp \
+		../../TechnicianApp/xmlmanager.cpp moc_mainwindow.cpp \
 		moc_websocket.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		websocket.o \
+		xmlmanager.o \
 		moc_mainwindow.o \
 		moc_websocket.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
@@ -180,9 +182,11 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/yacc.prf \
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
 		../../../TechnicianApp/TechnicianApp.pro ../../TechnicianApp/mainwindow.h \
-		../../TechnicianApp/websocket.h ../../TechnicianApp/main.cpp \
+		../../TechnicianApp/websocket.h \
+		../../TechnicianApp/xmlmanager.h ../../TechnicianApp/main.cpp \
 		../../TechnicianApp/mainwindow.cpp \
-		../../TechnicianApp/websocket.cpp
+		../../TechnicianApp/websocket.cpp \
+		../../TechnicianApp/xmlmanager.cpp
 QMAKE_TARGET  = TechnicianApp
 DESTDIR       = 
 TARGET        = TechnicianApp
@@ -466,8 +470,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../TechnicianApp/mainwindow.h ../../TechnicianApp/websocket.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../TechnicianApp/main.cpp ../../TechnicianApp/mainwindow.cpp ../../TechnicianApp/websocket.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../TechnicianApp/mainwindow.h ../../TechnicianApp/websocket.h ../../TechnicianApp/xmlmanager.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../TechnicianApp/main.cpp ../../TechnicianApp/mainwindow.cpp ../../TechnicianApp/websocket.cpp ../../TechnicianApp/xmlmanager.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../TechnicianApp/mainwindow.ui $(DISTDIR)/
 
 
@@ -504,6 +508,7 @@ compiler_moc_header_make_all: moc_mainwindow.cpp moc_websocket.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_websocket.cpp
 moc_mainwindow.cpp: ../../TechnicianApp/websocket.h \
+		../../TechnicianApp/xmlmanager.h \
 		../../TechnicianApp/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib64/qt5/bin/moc
@@ -534,16 +539,21 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: ../../TechnicianApp/main.cpp ../../TechnicianApp/mainwindow.h \
-		../../TechnicianApp/websocket.h
+		../../TechnicianApp/websocket.h \
+		../../TechnicianApp/xmlmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../TechnicianApp/main.cpp
 
 mainwindow.o: ../../TechnicianApp/mainwindow.cpp ../../TechnicianApp/mainwindow.h \
 		../../TechnicianApp/websocket.h \
+		../../TechnicianApp/xmlmanager.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../TechnicianApp/mainwindow.cpp
 
 websocket.o: ../../TechnicianApp/websocket.cpp ../../TechnicianApp/websocket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o websocket.o ../../TechnicianApp/websocket.cpp
+
+xmlmanager.o: ../../TechnicianApp/xmlmanager.cpp ../../TechnicianApp/xmlmanager.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o xmlmanager.o ../../TechnicianApp/xmlmanager.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

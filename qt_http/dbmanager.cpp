@@ -96,3 +96,9 @@ void Dbmanager::checkProcessOrders()
         }
     }
 }
+
+QSqlQuery Dbmanager::availableRepairs()
+{
+   QSqlQuery query("SELECT * FROM availablerepairs", db);
+   return query;
+}

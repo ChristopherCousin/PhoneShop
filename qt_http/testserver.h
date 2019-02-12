@@ -47,6 +47,7 @@ private:
     QList<QWebSocket *> m_clients;
 
     Xmlmanager xmlManager;
+
     Dbmanager dbManager;
     ConexionesWS conexionWS;
 };

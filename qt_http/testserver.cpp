@@ -71,6 +71,15 @@ void TestServer::processTextMessage(QString message)
             pClient->sendTextMessage("5login" + respuesta);
         }
     }
+    else if (message.mid(0, 6) == "orders")
+    {
+        message.remove(0, 6);
+        xmlManager.makeFiles("orders", message);
+        if (xmlManager.validatexml("newOrder.xml", "newOrder.xsd"))
+        {
+            newOrder();
+        }
+    }
 }
 
 void TestServer::newOrder()

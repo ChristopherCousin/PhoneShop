@@ -21,7 +21,7 @@ public slots:
     void processTextMessage(QString message);
 
 signals:
-     void recibirmensaje(QString);
+     void receivemessage(QString);
 
 
 private:

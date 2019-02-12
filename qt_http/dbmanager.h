@@ -17,6 +17,7 @@ public:
     QString findOrder(QString idorder);
     QString checkLogin(QString username, QString password);
     void checkProcessOrders();
+    QSqlQuery availableRepairs();
 private:
     QSqlDatabase db;
     Xmlmanager xmlManager;

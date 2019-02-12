@@ -7,20 +7,20 @@ Xmlmanager::Xmlmanager()
 
 void Xmlmanager::makeFiles(QString fileName, QString message)
 {
-    if (fileName == "order")
+    if (fileName == "orders")
     {
-        QFile newOrderFile("newOrder.xml");
-        if (!newOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        QFile OrdersXMLFile("OrdersXML.xml");
+        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
         else
         {
-            QTextStream stream(&newOrderFile);
+            QTextStream stream(&OrdersXMLFile);
             stream << message;
-            newOrderFile.close();
+            OrdersXMLFile.close();
         }
-        newOrderXML.setContent(&newOrderFile);
+        OrdersXML.setContent(&OrdersXMLFile);
     }
     if (fileName == "find")
     {
@@ -52,21 +52,6 @@ void Xmlmanager::makeFiles(QString fileName, QString message)
         }
         LoginXML.setContent(&LoginFile);
     }
-    if (fileName == "orders")
-    {
-        QFile OrdersXMLFile("OrdersXML.xml");
-        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        }
-        else
-        {
-            QTextStream stream(&OrdersXMLFile);
-            stream << message;
-            OrdersXMLFile.close();
-        }
-        OrdersXML.setContent(&OrdersXMLFile);
-    }
 }
 
 void Xmlmanager::loadXmls()
@@ -80,16 +65,6 @@ void Xmlmanager::loadXmls()
 
     OrdersXML.setContent(&OrdersXMLFile);
     OrdersXMLFile.close();
-
-    QFile newOrderFile("newOrder.xml");
-    if (!newOrderFile.open(QIODevice::ReadOnly))
-    {
-        // Error
-        std::cerr << "Error while loading file" << std::endl;
-    }
-
-    newOrderXML.setContent(&newOrderFile);
-    newOrderFile.close();
 
 
     QFile findOrderFile("findOrder.xml");
@@ -113,71 +88,19 @@ void Xmlmanager::loadXmls()
     LoginFile.close();
 }
 
-QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
-{
-    QDomDocument document;
-    QDomElement root = document.createElement("FoundedOrder");
-
-
-    QDomElement order = document.createElement("Order");
-    QDomElement status = document.createElement("Status");
-
-    QDomText statustxt = document.createTextNode(orderStatus);
-
-
-    status.appendChild(statustxt);
-    order.appendChild(status);
-    root.appendChild(order);
-    document.appendChild(root);
-
-    QString message = document.toString();
-    return message;
-}
-
-QString Xmlmanager::writeOrdersXml()
+QString Xmlmanager::writeRequestOrdersXml()
 {
     QDomDocument document;
     QDomElement root = document.createElement("Orders");
 
 
-    QSqlQuery query = dbManager.availableRepairs();
+    QDomElement order = document.createElement("Message");
 
-    while(query.next())
-    {
+    QDomText ordertxt = document.createTextNode("Request All Orders");
 
-        QDomElement order = document.createElement("Order");
-        QDomElement idorder = document.createElement("IdOrder");
-        QDomElement phone = document.createElement("Phone");
-        QDomElement repair = document.createElement("Repair");
-        QDomElement date = document.createElement("Date");
-        QDomElement status = document.createElement("Status");
 
-        QString idordertxt = query.value(3).toString();
-        QString phonetxt = query.value(1).toString();
-        QString repairtxt = query.value(2).toString();
-        QString datetxt = query.value(4).toString();
-        QString statustxt = query.value(0).toString();
-
-        QDomText idorderData = document.createTextNode(idordertxt);
-        QDomText phoneData = document.createTextNode(phonetxt);
-        QDomText repairData = document.createTextNode(repairtxt);
-        QDomText dateData = document.createTextNode(datetxt);
-        QDomText statusData = document.createTextNode(statustxt);
-
-        //------- añadimos ------//
-        order.appendChild(idorder);
-        order.appendChild(phone);
-        order.appendChild(repair);
-        order.appendChild(date);
-        order.appendChild(status);
-        idorder.appendChild(idorderData);
-        phone.appendChild(phoneData);
-        repair.appendChild(repairData);
-        date.appendChild(dateData);
-        status.appendChild(statusData);
-        root.appendChild(order);
-    }
-
+    order.appendChild(ordertxt);
+    root.appendChild(order);
     document.appendChild(root);
 
     QString message = document.toString();
@@ -204,10 +127,10 @@ QString Xmlmanager::writeLoginXml(QString logininfo)
     return message;
 }
 
-std::tuple<QString, QString, QString> Xmlmanager::readNewOrder()
+std::tuple<QString, QString, QString> Xmlmanager::readOrders()
 {
     loadXmls();
-    QDomElement root = newOrderXML.documentElement();
+    QDomElement root = OrdersXML.documentElement();
     QDomElement Component = root.firstChild().toElement();
     QString idorder;
     QString repair;

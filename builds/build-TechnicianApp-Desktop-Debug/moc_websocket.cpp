@@ -32,14 +32,14 @@ struct qt_meta_stringdata_Websocket_t {
 static const qt_meta_stringdata_Websocket_t qt_meta_stringdata_Websocket = {
     {
 QT_MOC_LITERAL(0, 0, 9), // "Websocket"
-QT_MOC_LITERAL(1, 10, 14), // "recibirmensaje"
+QT_MOC_LITERAL(1, 10, 14), // "receivemessage"
 QT_MOC_LITERAL(2, 25, 0), // ""
 QT_MOC_LITERAL(3, 26, 11), // "onConnected"
 QT_MOC_LITERAL(4, 38, 18), // "processTextMessage"
 QT_MOC_LITERAL(5, 57, 7) // "message"
 
     },
-    "Websocket\0recibirmensaje\0\0onConnected\0"
+    "Websocket\0receivemessage\0\0onConnected\0"
     "processTextMessage\0message"
 };
 #undef QT_MOC_LITERAL
@@ -80,7 +80,7 @@ void Websocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         Websocket *_t = static_cast<Websocket *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->recibirmensaje((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 0: _t->receivemessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->onConnected(); break;
         case 2: _t->processTextMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
@@ -89,7 +89,7 @@ void Websocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         int *result = reinterpret_cast<int *>(_a[0]);
         {
             typedef void (Websocket::*_t)(QString );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Websocket::recibirmensaje)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Websocket::receivemessage)) {
                 *result = 0;
                 return;
             }
@@ -134,7 +134,7 @@ int Websocket::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void Websocket::recibirmensaje(QString _t1)
+void Websocket::receivemessage(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

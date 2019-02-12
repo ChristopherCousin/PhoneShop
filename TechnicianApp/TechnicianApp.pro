@@ -30,11 +30,13 @@ QT += websockets
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    websocket.cpp
+    websocket.cpp \
+    xmlmanager.cpp
 
 HEADERS += \
         mainwindow.h \
-    websocket.h
+    websocket.h \
+    xmlmanager.h
 
 FORMS += \
         mainwindow.ui

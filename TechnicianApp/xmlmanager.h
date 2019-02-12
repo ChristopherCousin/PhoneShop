@@ -13,9 +13,6 @@
 #include <QXmlSchema>
 #include <QtXmlPatterns/QXmlSchema>
 #include <QtXmlPatterns/QXmlSchemaValidator>
-#include <QSqlQuery>
-#include <QSql>
-#include "dbmanager.h"
 
 class Xmlmanager
 {
@@ -29,14 +26,13 @@ public:
     void loadXmls();
     bool validatexml(QString xml, QString xsd);
     void makeFiles(QString fileName, QString message);
+    QString writeRequestOrdersXml();
 
 
 private:
-    QDomDocument newOrderXML;
+    QDomDocument OrdersXML;
     QDomDocument findOrderXML;
     QDomDocument LoginXML;
-    QDomDocument OrdersXML;
-    Dbmanager dbManager;
 };
 
 #endif // XMLMANAGER_H
