@@ -98,7 +98,6 @@ void TestServer::newOrder()
         std::get<0>(newOrderXml), std::get<1>(newOrderXml), std::get<2>(newOrderXml));
 }
 
-
 QString TestServer::findOrder()
 {
     qDebug() << conexionWS.user;
@@ -120,8 +119,6 @@ void TestServer::checkProcessOrders()
 {
     dbManager.checkProcessOrders();
 }
-
-
 
 void TestServer::socketDisconnected()
 {
