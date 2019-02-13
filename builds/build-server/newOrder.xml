@@ -1,7 +1,8 @@
 <Orders>
  <Order>
-  <IdOrder>{62f533b3-9ad4-421e-bbdd-bcc66fa69776}</IdOrder>
+  <IdOrder>{cbd6db3a-6252-4254-8627-3c497e722361}</IdOrder>
   <repair>100</repair>
   <Phone>Android</Phone>
+  <Action>order</Action>
  </Order>
 </Orders>

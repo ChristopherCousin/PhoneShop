@@ -9,6 +9,7 @@
           <xs:sequence>
             <xs:element name="Username" type="xs:string"/>
             <xs:element name="Password" type="xs:string"/>
+            <xs:element name="Action" type="xs:string"/>  
           </xs:sequence>
         </xs:complexType>
       </xs:element>

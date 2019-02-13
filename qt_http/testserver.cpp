@@ -41,44 +41,40 @@ void TestServer::processTextMessage(QString message)
     pClient = qobject_cast<QWebSocket*>(sender());
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
 
-    qDebug() << xmlManager.makeFiles("validate", message);
+    QString xmlToValidate = xmlManager.xmlMessage(message);
 
-
-    if (message.mid(0, 5) == "order")
+    if (xmlToValidate == "order")
     {
-        message.remove(0, 5);
-        xmlManager.makeFiles("order", message);
-        if (xmlManager.validatexml("newOrder.xml", "newOrder.xsd"))
+        QString xmlName = xmlManager.makeFiles("order", message);
+        if (xmlManager.validatexml(xmlName, "newOrder.xsd"))
         {
             newOrder();
         }
     }
-    else if (message.mid(0, 5) == "find ")
+    else if (xmlToValidate == "find")
     {
-        message.remove(0, 5);
-        xmlManager.makeFiles("find", message);
-        if (xmlManager.validatexml("findOrder.xml", "findOrder.xsd"))
+        QString xmlName = xmlManager.makeFiles("find", message);
+        qDebug() << xmlName;
+        if (xmlManager.validatexml(xmlName, "findOrder.xsd"))
         {
             respuesta = xmlManager.writeOrderStatusXml(findOrder());
 
             pClient->sendTextMessage("9findOrder" + respuesta);
         }
     }
-    else if (message.mid(0, 5) == "login")
+    else if (xmlToValidate == "login")
     {
-        message.remove(0, 5);
-        xmlManager.makeFiles("login", message);
-        if (xmlManager.validatexml("Login.xml", "Login.xsd"))
+        QString xmlName = xmlManager.makeFiles("login", message);
+        if (xmlManager.validatexml(xmlName, "Login.xsd"))
         {
             respuesta = checkLogin();
             pClient->sendTextMessage("5login" + respuesta);
         }
     }
-    else if (message.mid(0, 6) == "orders")
+    else if (xmlToValidate == "orders")
     {
-        message.remove(0, 6);
-        xmlManager.makeFiles("orders", message);
-        if (xmlManager.validatexml("Orders.xml", "Orders.xsd"))
+        QString xmlName = xmlManager.makeFiles("orders", message);
+        if (xmlManager.validatexml(xmlName, "Orders.xsd"))
         {
             newOrder();
         }

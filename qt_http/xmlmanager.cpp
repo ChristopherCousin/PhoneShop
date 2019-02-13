@@ -9,7 +9,7 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
 {
     if (fileName == "order")
     {
-        QFile newOrderFile("newOrder.xml");
+        QFile newOrderFile;
         if (!newOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
@@ -21,11 +21,13 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
             newOrderFile.close();
         }
         newOrderXML.setContent(&newOrderFile);
+        return newOrderFile.fileName();
     }
     if (fileName == "find")
     {
-        QFile findOrderFile("findOrder.xml");
-        if (!findOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        QTemporaryFile findOrderFile;
+        qDebug() << findOrderFile.fileName();
+        if (!findOrderFile.open())
         {
             qDebug() << "Failed to open file for writting";
         }
@@ -36,26 +38,29 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
             findOrderFile.close();
         }
         findOrderXML.setContent(&findOrderFile);
+        findOrderFile.rename("/");
+        qDebug() << findOrderFile.fileName();
+        return findOrderFile.fileName();
     }
     if (fileName == "login")
     {
-        QFile LoginFile("Login.xml");
-        if (!LoginFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        QTemporaryFile LoginFile;
+        if (!LoginFile.open())
         {
             qDebug() << "Failed to open file for writting";
         }
         else
-        {
-            QTextStream stream(&LoginFile);
+        {            QTextStream stream(&LoginFile);
             stream << message;
             LoginFile.close();
         }
         LoginXML.setContent(&LoginFile);
+        return LoginFile.fileName();
     }
     if (fileName == "orders")
     {
-        QFile OrdersXMLFile("OrdersXML.xml");
-        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        QTemporaryFile OrdersXMLFile;
+        if (!OrdersXMLFile.open())
         {
             qDebug() << "Failed to open file for writting";
         }
@@ -66,6 +71,7 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
             OrdersXMLFile.close();
         }
         OrdersXML.setContent(&OrdersXMLFile);
+        return OrdersXMLFile.fileName();
     }
 
     if (fileName == "validate")
@@ -292,7 +298,19 @@ bool Xmlmanager::validatexml(QString xml, QString xsd)
     }
 }
 
-bool Xmlmanager::xmlisValid(QString xml)
+QString Xmlmanager::xmlMessage(QString xml)
 {
+    QXmlStreamReader xmlmessage(xml);
+    QString message{""};
 
+       while (!xmlmessage.atEnd())
+       {
+            xmlmessage.readNextStartElement();
+            if(xmlmessage.name() == "Action")
+            {
+                message = xmlmessage.readElementText();
+            }
+       }
+
+        return message;
 }

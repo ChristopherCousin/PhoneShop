@@ -16,6 +16,8 @@
 #include <QSqlQuery>
 #include <QSql>
 #include <QTemporaryFile>
+#include <QXmlStreamReader>
+#include <QDir>
 
 class Xmlmanager
 {
@@ -28,7 +30,7 @@ public:
     QString writeLoginXml(QString orderStatus);
     QString writeOrdersXml(QSqlQuery query);
     bool validatexml(QString xml, QString xsd);
-    bool xmlisValid(QString xml);
+    QString xmlMessage(QString xml);
     QString makeFiles(QString fileName, QString message);
 
 

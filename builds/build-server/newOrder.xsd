@@ -10,6 +10,7 @@
             <xs:element name="IdOrder" type="xs:string"/>
             <xs:element name="repair" type="xs:string"/>
             <xs:element name="Phone" type="xs:string"/>
+            <xs:element name="Action" type="xs:string"/>  
           </xs:sequence>
         </xs:complexType>
       </xs:element>

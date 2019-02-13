@@ -2,5 +2,6 @@
  <Login>
   <Username>admin</Username>
   <Password>admin</Password>
+  <Action>login</Action>
  </Login>
 </LoginInfo>

@@ -356,6 +356,7 @@ void MainWindow::writeOrderXML()
     order.appendChild(idorder);
     order.appendChild(repair);
     order.appendChild(phone);
+    order.appendChild(action);
     root.appendChild(order);
     document.appendChild(root);
 
@@ -390,7 +391,7 @@ void MainWindow::writeFindOrderXML()
     QDomElement idorder = document.createElement("IdOrder");
     QDomElement action = document.createElement("Action");
 
-    QString actiontxt = "find  ";
+    QString actiontxt = "find";
 
     QDomText idordertxt = document.createTextNode(ui->lineEdit_2->text());
     QDomText actionData = document.createTextNode(actiontxt);
@@ -449,6 +450,7 @@ void MainWindow::writeLoginXML()
     action.appendChild(actionData);
     login.appendChild(username);
     login.appendChild(password);
+    login.appendChild(action);
     root.appendChild(login);
     document.appendChild(root);
 
