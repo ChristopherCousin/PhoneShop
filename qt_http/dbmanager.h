@@ -19,6 +19,8 @@ public:
     QString checkLogin(QString username, QString password);
     void checkProcessOrders();
     QSqlQuery availableRepairs();
+    QSqlQuery availableOrders();
+    void newOrderStatus(QString orderId, QString newStatus);
 
 private:
     QSqlDatabase db;

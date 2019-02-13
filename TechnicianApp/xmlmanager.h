@@ -13,6 +13,7 @@
 #include <QXmlSchema>
 #include <QtXmlPatterns/QXmlSchema>
 #include <QtXmlPatterns/QXmlSchemaValidator>
+#include <QTemporaryFile>
 
 class Xmlmanager
 {
@@ -26,8 +27,11 @@ public:
     QString writeLoginXml(QString orderStatus);
     void loadXmls();
     bool validatexml(QString xml, QString xsd);
-    void makeFiles(QString fileName, QString message);
+    QString makeFiles(QString fileName, QString message);
     QString writeRequestOrdersXml();
+    QString xmlMessage(QString xml);
+    std::tuple<std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>> readOrdersXML(QString xml);
+    QString writeNewOrderStatus(QString idorder, QString newStatus);
 
 
 private:

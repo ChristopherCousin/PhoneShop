@@ -73,10 +73,20 @@ void TestServer::processTextMessage(QString message)
     }
     else if (xmlToValidate == "orders")
     {
+
         QString xmlName = xmlManager.makeFiles("orders", message);
         if (xmlManager.validatexml(xmlName, "Orders.xsd"))
         {
-            newOrder();
+            pClient->sendTextMessage(xmlManager.writeOrdersXml(dbManager.availableOrders()));
+        }
+    }
+    else if (xmlToValidate == "newOrderStatus")
+    {
+        QString xmlName = xmlManager.makeFiles("newOrderStatus", message);
+        if (xmlManager.validatexml(xmlName, "newOrderStatus.xsd"))
+        {
+            auto tuple = xmlManager.readNewOrderStatus(message);
+            dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
         }
     }
 }
@@ -110,6 +120,7 @@ void TestServer::checkProcessOrders()
 {
     dbManager.checkProcessOrders();
 }
+
 
 
 void TestServer::socketDisconnected()

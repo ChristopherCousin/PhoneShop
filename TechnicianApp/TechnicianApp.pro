@@ -36,7 +36,8 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     websocket.h \
-    xmlmanager.h
+    xmlmanager.h \
+    orders.h
 
 FORMS += \
         mainwindow.ui

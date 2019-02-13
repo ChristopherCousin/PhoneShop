@@ -31,6 +31,7 @@ public:
     QString writeOrdersXml(QSqlQuery query);
     bool validatexml(QString xml, QString xsd);
     QString xmlMessage(QString xml);
+    std::tuple<QString, QString> readNewOrderStatus(QString xml);
     QString makeFiles(QString fileName, QString message);
 
 
@@ -39,6 +40,7 @@ private:
     QDomDocument findOrderXML;
     QDomDocument LoginXML;
     QDomDocument OrdersXML;
+    QDomDocument newOrderStatusXML;
 };
 
 #endif // XMLMANAGER_H

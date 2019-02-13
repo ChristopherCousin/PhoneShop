@@ -37,6 +37,27 @@ void Dbmanager::newOrder(QString phone, QString repair, QString idorder)
     }
 }
 
+void Dbmanager::newOrderStatus(QString orderId, QString newStatus)
+{
+
+    QSqlQuery query;
+    query.prepare("UPDATE orders SET statusorders = ? WHERE orderidorders = ?;");
+
+    query.bindValue(0, newStatus);
+    query.bindValue(1, orderId);
+    query.exec();
+
+    if (!query.lastError().isValid())
+    {
+        qDebug() << "Error en consulta: " << query.lastError();
+    }
+}
+
+QSqlQuery Dbmanager::availableOrders()
+{
+    QSqlQuery query("SELECT * FROM orders where statusorders != 'done'", db);
+    return query;
+}
 
 QString Dbmanager::findOrder(QString idorder)
 {

@@ -6,26 +6,17 @@ Xmlmanager::Xmlmanager()
 }
 
 
-void Xmlmanager::makeFiles(QString fileName, QString message)
+QString Xmlmanager::makeFiles(QString fileName, QString message)
 {
-    if (fileName == "orders")
-    {
-        QFile OrdersXMLFile("OrdersXML.xml");
-        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            qDebug() << "Failed to open file for writting";
-        }
-        else
-        {
-            QTextStream stream(&OrdersXMLFile);
-            stream << message;
-            OrdersXMLFile.close();
-        }
-        OrdersXML.setContent(&OrdersXMLFile);
-    }
+    QTemporaryFile randomName;
+    randomName.open();
+    QString pathName = randomName.fileName();
+    pathName.append(".xml");
+
+
     if (fileName == "find")
     {
-        QFile findOrderFile("findOrder.xml");
+        QFile findOrderFile(pathName);
         if (!findOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
@@ -37,21 +28,40 @@ void Xmlmanager::makeFiles(QString fileName, QString message)
             findOrderFile.close();
         }
         findOrderXML.setContent(&findOrderFile);
+        return findOrderFile.fileName();
     }
-    if (fileName == "login")
+    if (fileName == "orders")
     {
-        QFile LoginFile("Login.xml");
-        if (!LoginFile.open(QIODevice::WriteOnly | QIODevice::Text))
+
+        QFile OrdersXMLFile(pathName);
+        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
         else
         {
-            QTextStream stream(&LoginFile);
+            QTextStream stream(&OrdersXMLFile);
             stream << message;
-            LoginFile.close();
+            OrdersXMLFile.close();
         }
-        LoginXML.setContent(&LoginFile);
+        OrdersXML.setContent(&OrdersXMLFile);
+        return OrdersXMLFile.fileName();
+    }
+
+    if (fileName == "validate")
+    {
+        QFile file(pathName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&file);
+            stream << message;
+            file.close();
+        }
+        return file.fileName();
     }
 }
 
@@ -95,18 +105,109 @@ QString Xmlmanager::writeRequestOrdersXml()
     QDomElement root = document.createElement("Orders");
 
 
-    QDomElement login = document.createElement("Order");
-    QDomElement user = document.createElement("Message");
+    QDomElement order = document.createElement("Order");
+    QDomElement action = document.createElement("Action");
+    QDomElement messag = document.createElement("Message");
     QString messageorder = "Resquest Orders";
+    QString actiontxt = "orders";
+    QDomText actionData = document.createTextNode(actiontxt);
     QDomText logintxt = document.createTextNode(messageorder);
 
-    user.appendChild(logintxt);
-    login.appendChild(user);
-    root.appendChild(login);
+    action.appendChild(actionData);
+    messag.appendChild(logintxt);
+    order.appendChild(action);
+    order.appendChild(messag);
+    root.appendChild(order);
     document.appendChild(root);
 
     QString message = document.toString();
     return message;
+}
+
+QString Xmlmanager::writeNewOrderStatus(QString idorder, QString newStatus)
+{
+    QDomDocument document;
+    QDomElement root = document.createElement("Orders");
+
+
+    QDomElement order = document.createElement("Order");
+    QDomElement action2 = document.createElement("Action");
+    QDomElement action = document.createElement("IdOrder");
+    QDomElement messag = document.createElement("Status");
+    QString action2txt = "newOrderStatus";
+    QString messageorder = newStatus;
+    QString actiontxt = idorder;
+    QDomText action2Data = document.createTextNode(action2txt);
+    QDomText actionData = document.createTextNode(actiontxt);
+    QDomText logintxt = document.createTextNode(messageorder);
+
+
+    action.appendChild(actionData);
+    action2.appendChild(action2Data);
+    messag.appendChild(logintxt);
+    order.appendChild(action2);
+    order.appendChild(action);
+    order.appendChild(messag);
+    root.appendChild(order);
+    document.appendChild(root);
+
+    QString message = document.toString();
+    return message;
+}
+
+QString Xmlmanager::xmlMessage(QString xml)
+{
+    QXmlStreamReader xmlmessage(xml);
+    QString message{""};
+
+       while (!xmlmessage.atEnd())
+       {
+            xmlmessage.readNextStartElement();
+            if(xmlmessage.name() == "Action")
+            {
+                message = xmlmessage.readElementText();
+            }
+       }
+
+        return message;
+}
+
+std::tuple<std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>> Xmlmanager::readOrdersXML(QString xml)
+{
+
+    QXmlStreamReader xmlmessage(xml);
+    std::vector<QString> idorder;
+    std::vector<QString> phone;
+    std::vector<QString> repair;
+    std::vector<QString> date;
+    std::vector<QString> status;
+
+       while (!xmlmessage.atEnd())
+       {
+            xmlmessage.readNextStartElement();
+            if(xmlmessage.name() == "IdOrder")
+            {
+                idorder.push_back(xmlmessage.readElementText());
+            }
+            if(xmlmessage.name() == "Phone")
+            {
+                phone.push_back(xmlmessage.readElementText());
+            }
+            if(xmlmessage.name() == "Repair")
+            {
+                repair.push_back(xmlmessage.readElementText());
+            }
+            if(xmlmessage.name() == "Date")
+            {
+                date.push_back(xmlmessage.readElementText());
+            }
+            if(xmlmessage.name() == "Status")
+            {
+                status.push_back(xmlmessage.readElementText());
+            }
+       }
+
+        return std::make_tuple(idorder, phone, repair, date, status);
 }
 
 QString Xmlmanager::writeLoginXml(QString logininfo)

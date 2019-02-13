@@ -7,9 +7,15 @@ Xmlmanager::Xmlmanager()
 
 QString Xmlmanager::makeFiles(QString fileName, QString message)
 {
+    QTemporaryFile randomName;
+    randomName.open();
+    QString pathName = randomName.fileName();
+    qDebug() << pathName;
+    pathName.append(".xml");
+
     if (fileName == "order")
     {
-        QFile newOrderFile;
+        QFile newOrderFile(pathName);
         if (!newOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
@@ -23,11 +29,11 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
         newOrderXML.setContent(&newOrderFile);
         return newOrderFile.fileName();
     }
+
     if (fileName == "find")
     {
-        QTemporaryFile findOrderFile;
-        qDebug() << findOrderFile.fileName();
-        if (!findOrderFile.open())
+        QFile findOrderFile(pathName);
+        if (!findOrderFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
@@ -38,19 +44,18 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
             findOrderFile.close();
         }
         findOrderXML.setContent(&findOrderFile);
-        findOrderFile.rename("/");
-        qDebug() << findOrderFile.fileName();
         return findOrderFile.fileName();
     }
     if (fileName == "login")
     {
-        QTemporaryFile LoginFile;
-        if (!LoginFile.open())
+        QFile LoginFile(pathName);
+        if (!LoginFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
         else
-        {            QTextStream stream(&LoginFile);
+        {
+            QTextStream stream(&LoginFile);
             stream << message;
             LoginFile.close();
         }
@@ -59,8 +64,9 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
     }
     if (fileName == "orders")
     {
-        QTemporaryFile OrdersXMLFile;
-        if (!OrdersXMLFile.open())
+
+        QFile OrdersXMLFile(pathName);
+        if (!OrdersXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
@@ -73,11 +79,28 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
         OrdersXML.setContent(&OrdersXMLFile);
         return OrdersXMLFile.fileName();
     }
+    if (fileName == "newOrderStatus")
+    {
+
+        QFile newOrderStatusXMLFile(pathName);
+        if (!newOrderStatusXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&newOrderStatusXMLFile);
+            stream << message;
+            newOrderStatusXMLFile.close();
+        }
+        newOrderStatusXML.setContent(&newOrderStatusXMLFile);
+        return newOrderStatusXMLFile.fileName();
+    }
 
     if (fileName == "validate")
     {
-        QTemporaryFile file;
-        if (!file.open())
+        QFile file(pathName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Failed to open file for writting";
         }
@@ -119,8 +142,6 @@ QString Xmlmanager::writeOrdersXml(QSqlQuery query)
     QDomElement root = document.createElement("Orders");
 
 
-
-
     while(query.next())
     {
 
@@ -130,25 +151,30 @@ QString Xmlmanager::writeOrdersXml(QSqlQuery query)
         QDomElement repair = document.createElement("Repair");
         QDomElement date = document.createElement("Date");
         QDomElement status = document.createElement("Status");
+        QDomElement action = document.createElement("Action");
 
         QString idordertxt = query.value(3).toString();
         QString phonetxt = query.value(1).toString();
         QString repairtxt = query.value(2).toString();
         QString datetxt = query.value(4).toString();
         QString statustxt = query.value(0).toString();
+        QString actiontxt = "orders";
 
         QDomText idorderData = document.createTextNode(idordertxt);
         QDomText phoneData = document.createTextNode(phonetxt);
         QDomText repairData = document.createTextNode(repairtxt);
         QDomText dateData = document.createTextNode(datetxt);
         QDomText statusData = document.createTextNode(statustxt);
+        QDomText actionData = document.createTextNode(actiontxt);
 
         //------- añadimos ------//
+        order.appendChild(action);
         order.appendChild(idorder);
         order.appendChild(phone);
         order.appendChild(repair);
         order.appendChild(date);
         order.appendChild(status);
+        action.appendChild(actionData);
         idorder.appendChild(idorderData);
         phone.appendChild(phoneData);
         repair.appendChild(repairData);
@@ -313,4 +339,26 @@ QString Xmlmanager::xmlMessage(QString xml)
        }
 
         return message;
+}
+
+std::tuple<QString, QString> Xmlmanager::readNewOrderStatus(QString xml)
+{
+    QXmlStreamReader xmlmessage(xml);
+    QString idorder{""};
+    QString status{""};
+
+       while (!xmlmessage.atEnd())
+       {
+            xmlmessage.readNextStartElement();
+            if(xmlmessage.name() == "IdOrder")
+            {
+                idorder = xmlmessage.readElementText();
+            }
+            if(xmlmessage.name() == "Status")
+            {
+                status = xmlmessage.readElementText();
+            }
+       }
+
+         return std::make_tuple(idorder, status);
 }
