@@ -33,6 +33,7 @@ public:
     QString xmlMessage(QString xml);
     std::tuple<QString, QString> readNewOrderStatus(QString xml);
     QString makeFiles(QString fileName, QString message);
+    QString writeNewOrderStatus(QString idorder, QString newStatus);
 
 
 private:

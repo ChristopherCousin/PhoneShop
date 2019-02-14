@@ -201,11 +201,15 @@ QString Xmlmanager::writeLoginXml(QString logininfo)
 
 
     QDomElement login = document.createElement("Login");
+    QDomElement action = document.createElement("Action");
     QDomElement user = document.createElement("Username");
 
+    QDomText actionData = document.createTextNode("login");
     QDomText logintxt = document.createTextNode(logininfo);
 
     user.appendChild(logintxt);
+    action.appendChild(actionData);
+    login.appendChild(action);
     login.appendChild(user);
     root.appendChild(login);
     document.appendChild(root);
@@ -297,6 +301,37 @@ std::tuple<QString, QString> Xmlmanager::readLogin()
     return std::make_tuple(username, password);
 }
 
+
+QString Xmlmanager::writeNewOrderStatus(QString idorder, QString newStatus)
+{
+    QDomDocument document;
+    QDomElement root = document.createElement("Orders");
+
+
+    QDomElement order = document.createElement("Order");
+    QDomElement action2 = document.createElement("Action");
+    QDomElement action = document.createElement("IdOrder");
+    QDomElement messag = document.createElement("Status");
+    QString action2txt = "newOrderStatus";
+    QString messageorder = newStatus;
+    QString actiontxt = idorder;
+    QDomText action2Data = document.createTextNode(action2txt);
+    QDomText actionData = document.createTextNode(actiontxt);
+    QDomText logintxt = document.createTextNode(messageorder);
+
+
+    action.appendChild(actionData);
+    action2.appendChild(action2Data);
+    messag.appendChild(logintxt);
+    order.appendChild(action2);
+    order.appendChild(action);
+    order.appendChild(messag);
+    root.appendChild(order);
+    document.appendChild(root);
+
+    QString message = document.toString();
+    return message;
+}
 
 bool Xmlmanager::validatexml(QString xml, QString xsd)
 {

@@ -28,6 +28,31 @@ QString Xmlmanager::xmlMessage(QString xml)
         return message;
 }
 
+std::tuple<QString, QString> Xmlmanager::readOrdersXML(QString xml)
+{
+
+    QXmlStreamReader xmlmessage(xml);
+    QString idorder;
+    QString status;
+
+
+       while (!xmlmessage.atEnd())
+       {
+            xmlmessage.readNextStartElement();
+            if(xmlmessage.name() == "IdOrder")
+            {
+                idorder.push_back(xmlmessage.readElementText());
+            }
+            if(xmlmessage.name() == "Status")
+            {
+                status.push_back(xmlmessage.readElementText());
+            }
+       }
+
+        return std::make_tuple(idorder, status);
+}
+
+
 QString Xmlmanager::makeFiles(QString fileName, QString message)
 {
     QTemporaryFile randomName;
@@ -50,5 +75,21 @@ QString Xmlmanager::makeFiles(QString fileName, QString message)
             findOrderFile.close();
         }
         return findOrderFile.fileName();
+    }
+    if (fileName == "newOrderStatus")
+    {
+
+        QFile newOrderStatusXMLFile(pathName);
+        if (!newOrderStatusXMLFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Failed to open file for writting";
+        }
+        else
+        {
+            QTextStream stream(&newOrderStatusXMLFile);
+            stream << message;
+            newOrderStatusXMLFile.close();
+        }
+        return newOrderStatusXMLFile.fileName();
     }
 }

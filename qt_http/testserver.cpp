@@ -86,16 +86,13 @@ void TestServer::processTextMessage(QString message)
         {
             auto tuple = xmlManager.readNewOrderStatus(message);
             dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
-        }
-    }
-    else if (xmlToValidate == "UpdateStatus")
-    {
-        QString xmlName = xmlManager.makeFiles("newOrderStatus", message);
-        if (xmlManager.validatexml(xmlName, "newOrderStatus.xsd"))
-        {
+            //Aqui hago otra guarrada, tendría que hacer una referencia por cada tienda para saber a quien mandarselo,
+            // pero en este caso se lo voy a enviar a todas las tiendas menos al tecnico, por falta d etiempo, que sirve igual.
 
-            auto tuple = xmlManager.readNewOrderStatus(message);
-            dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
+            for(int x = 0;x <= m_clients.count()-1 ; x ++)
+            {
+                m_clients.at(x)->sendTextMessage(message);
+            }
         }
     }
 }

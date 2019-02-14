@@ -487,7 +487,7 @@ void MainWindow::recibirmensaje(QString message)
             readFoundedOrderXML();
         }
     }
-    else if (xmlToValidate == "No")
+    else if (xmlToValidate == "login")
     {
         if (message == "No")
         {
@@ -499,10 +499,24 @@ void MainWindow::recibirmensaje(QString message)
             readLoginXML();
         }
     }
+    else if (xmlToValidate == "newOrderStatus")
+    {
+        if(conectado)
+        {
+            QString xmlName = xmlManager.makeFiles("newOrderStatus", message);
+            if (validatexml(xmlName, "newOrderStatus.xsd"))
+            {
+                auto messages = xmlManager.readOrdersXML(message);
+                QString mensaje = "La orden con numero: " + std::get<0>(messages) + ", Ha cambiado a " + std::get<1>(messages);
+                QMessageBox::information(this, "Change", mensaje);
+            }
+        }
+    }
 }
 
 void MainWindow::onLoginSuccessfully()
 {
+    conectado = true;
     ui->actionLog_out->setVisible(true);
     ui->actionLogin->setVisible(false);
     ui->tabWidget->tabBar()->show();
@@ -520,6 +534,7 @@ void MainWindow::onLoginSuccessfully()
 
 void MainWindow::onLogOutSuccessfully()
 {
+    conectado = false;
     startConfig();
 }
 

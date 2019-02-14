@@ -80,6 +80,7 @@ private:
     QSize ordersSizeWindow;
     QSize ordersSizeLabel;
     Xmlmanager xmlManager;
+    bool conectado = false;
 
 };
 

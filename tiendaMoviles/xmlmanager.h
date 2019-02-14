@@ -23,6 +23,7 @@ public:
     Xmlmanager();
     QString xmlMessage(QString xml);
     QString makeFiles(QString fileName, QString message);
+    std::tuple<QString, QString> readOrdersXML(QString xml);
 };
 
 
