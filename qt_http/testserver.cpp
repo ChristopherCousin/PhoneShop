@@ -30,7 +30,6 @@ void TestServer::onNewConnection()
     connect(pSocket, &QWebSocket::disconnected, this, &TestServer::socketDisconnected);
 
     m_clients << pSocket;
-    conexionWS.websocket = pSocket;
 
 }
 
@@ -59,7 +58,7 @@ void TestServer::processTextMessage(QString message)
         {
             respuesta = xmlManager.writeOrderStatusXml(findOrder());
 
-            pClient->sendTextMessage("9findOrder" + respuesta);
+            pClient->sendTextMessage(respuesta);
         }
     }
     else if (xmlToValidate == "login")
@@ -68,7 +67,7 @@ void TestServer::processTextMessage(QString message)
         if (xmlManager.validatexml(xmlName, "Login.xsd"))
         {
             respuesta = checkLogin();
-            pClient->sendTextMessage("5login" + respuesta);
+            pClient->sendTextMessage(respuesta);
         }
     }
     else if (xmlToValidate == "orders")
@@ -89,6 +88,16 @@ void TestServer::processTextMessage(QString message)
             dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
         }
     }
+    else if (xmlToValidate == "UpdateStatus")
+    {
+        QString xmlName = xmlManager.makeFiles("newOrderStatus", message);
+        if (xmlManager.validatexml(xmlName, "newOrderStatus.xsd"))
+        {
+
+            auto tuple = xmlManager.readNewOrderStatus(message);
+            dbManager.newOrderStatus(std::get<0>(tuple), std::get<1>(tuple));
+        }
+    }
 }
 
 void TestServer::newOrder()
@@ -100,10 +109,10 @@ void TestServer::newOrder()
 
 QString TestServer::findOrder()
 {
-    qDebug() << conexionWS.user;
     QString idorder = xmlManager.readFindOrder();
     QString result{ "" };
     result = dbManager.findOrder(idorder);
+
     return result;
 }
 

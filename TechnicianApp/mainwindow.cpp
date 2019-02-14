@@ -47,6 +47,9 @@ void MainWindow::on_pushButton_clicked()
     QString message = xmlManager.writeNewOrderStatus(ui->label_orderid->text(), ui->lineEdit_newStatus->text());
     m_webSocket->sendXML(message);
     on_btn_refresh_clicked();
+    QString message2 = xmlManager.writeUpdateStatusXml(ui->label_orderid->text(), ui->lineEdit_newStatus->text());
+    m_webSocket->sendXML(message2);
+
 }
 
 void MainWindow::availableOrders(QString xml)

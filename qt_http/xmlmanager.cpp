@@ -122,12 +122,17 @@ QString Xmlmanager::writeOrderStatusXml(QString orderStatus)
 
 
     QDomElement order = document.createElement("Order");
+    QDomElement action = document.createElement("Action");
     QDomElement status = document.createElement("Status");
 
+    QString actiontxt = "findOrder";
+
+    QDomText actionData = document.createTextNode(actiontxt);
     QDomText statustxt = document.createTextNode(orderStatus);
 
-
+    action.appendChild(actionData);
     status.appendChild(statustxt);
+    order.appendChild(action);
     order.appendChild(status);
     root.appendChild(order);
     document.appendChild(root);

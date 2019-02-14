@@ -27,8 +27,7 @@ QT += sql
 # Input
 HEADERS += testserver.h \
     xmlmanager.h \
-    dbmanager.h \
-    conexionws.h
+    dbmanager.h
 SOURCES += main.cpp testserver.cpp \
     xmlmanager.cpp \
     dbmanager.cpp

@@ -32,6 +32,7 @@ public:
     QString xmlMessage(QString xml);
     std::tuple<std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>, std::vector<QString>> readOrdersXML(QString xml);
     QString writeNewOrderStatus(QString idorder, QString newStatus);
+    QString writeUpdateStatusXml(QString idorder, QString newStatus);
 
 
 private:

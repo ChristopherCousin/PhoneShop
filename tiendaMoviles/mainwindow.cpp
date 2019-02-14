@@ -476,17 +476,19 @@ void MainWindow::writeLoginXML()
 
 void MainWindow::recibirmensaje(QString message)
 {
-    int toCute = message.mid(0, 1).toInt();
-    message.remove(0, 1);
-    if (message.mid(0, toCute) == "findOrder")
+    QString xmlToValidate = xmlManager.xmlMessage(message);
+
+    if (xmlToValidate == "findOrder")
     {
-        message.remove(0, toCute);
-        xmlFoundedOrder.setContent(message);
-        readFoundedOrderXML();
+        QString fileName = xmlManager.makeFiles("find", message);
+        if(validatexml(fileName, "find.xsd"))
+        {
+            xmlFoundedOrder.setContent(message);
+            readFoundedOrderXML();
+        }
     }
-    else if (message.mid(0, toCute) == "login")
+    else if (xmlToValidate == "No")
     {
-        message.remove(0, toCute);
         if (message == "No")
         {
             QMessageBox::information(this, tr("Error"), tr("Authentication failed"));

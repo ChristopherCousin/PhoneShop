@@ -12,7 +12,6 @@
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
 #include "dbmanager.h"
-#include "conexionws.h"
 
 
 class QWebSocketServer;
@@ -49,7 +48,6 @@ private:
     Xmlmanager xmlManager;
 
     Dbmanager dbManager;
-    ConexionesWS conexionWS;
 };
 
 #endif

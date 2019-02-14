@@ -1,8 +1,8 @@
 <Orders>
  <Order>
-  <IdOrder>{eec72857-4301-4e23-95c0-fb6a0094bf94}</IdOrder>
+  <IdOrder>{02d59abf-bb60-4da0-917a-5f938f5224f0}</IdOrder>
   <repair>Pantalla</repair>
-  <Phone>Android</Phone>
+  <Phone>Iphone</Phone>
   <Action>order</Action>
  </Order>
 </Orders>

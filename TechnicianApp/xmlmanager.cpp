@@ -155,6 +155,39 @@ QString Xmlmanager::writeNewOrderStatus(QString idorder, QString newStatus)
     return message;
 }
 
+QString Xmlmanager::writeUpdateStatusXml(QString idorder, QString newStatus)
+{
+    QDomDocument document;
+    QDomElement root = document.createElement("Orders");
+
+
+    QDomElement order = document.createElement("Order");
+    QDomElement action2 = document.createElement("Action");
+    QDomElement action = document.createElement("IdOrder");
+    QDomElement messag = document.createElement("Status");
+
+    QString action2txt = "UpdateStatus";
+    QString messageorder = newStatus;
+    QString actiontxt = idorder;
+
+    QDomText action2Data = document.createTextNode(action2txt);
+    QDomText actionData = document.createTextNode(actiontxt);
+    QDomText logintxt = document.createTextNode(messageorder);
+
+
+    action.appendChild(actionData);
+    action2.appendChild(action2Data);
+    messag.appendChild(logintxt);
+    order.appendChild(action2);
+    order.appendChild(action);
+    order.appendChild(messag);
+    root.appendChild(order);
+    document.appendChild(root);
+
+    QString message = document.toString();
+    return message;
+}
+
 QString Xmlmanager::xmlMessage(QString xml)
 {
     QXmlStreamReader xmlmessage(xml);

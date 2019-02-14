@@ -14,6 +14,7 @@
 #include <QtXmlPatterns/QXmlSchemaValidator>
 #include <QXmlSchema>
 #include "websocket.h"
+#include "xmlmanager.h"
 
 
 namespace Ui {
@@ -78,6 +79,7 @@ private:
     Websocket *m_webSocket;
     QSize ordersSizeWindow;
     QSize ordersSizeLabel;
+    Xmlmanager xmlManager;
 
 };
 
